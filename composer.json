@@ -1,0 +1,37 @@
+{
+    "name": "ninedigit/ekasa-cloud-clientphp",
+    "type": "library",
+    "version": "0.9",
+    "description": "API client for eKasa Cloud API",
+    "homepage": "https://bitbucket.org/9digit/ekasa-cloud-phpapiclient",
+    "keywords": ["ekasa", "cloud", "api", "rest", "http", "client"],
+    "authors": [{
+        "name": "Tomáš Peťovský",
+        "email": "tomas.petovsky@ninedigit.sk",
+        "homepage": "https://www.ninedigit.sk"
+    }],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Acme\\": "src/",
+            "NineDigit\\eKasa\\Cloud\\ApiClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NineDigit\\eKasa\\Cloud\\ApiClient\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "symfony/serializer": "^5.3",
+        "symfony/property-access": "^5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}
