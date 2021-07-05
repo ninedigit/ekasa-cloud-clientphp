@@ -1,8 +1,9 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Exceptions;
-use NineDigit\eKasa\Cloud\ApiClient\Models\ProblemDetails;
-use NineDigit\eKasa\Cloud\ApiClient\Exceptions\ApiException;
+namespace NineDigit\eKasa\Cloud\Client\Exceptions;
+
+use NineDigit\eKasa\Cloud\Client\Models\ProblemDetails;
+use NineDigit\eKasa\Cloud\Client\Exceptions\ApiException;
 
 class ProblemDetailsException extends ApiException {
     public ProblemDetails $details;

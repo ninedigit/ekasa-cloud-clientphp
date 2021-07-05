@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
 
 /**
  * Objekt nastavení elektronického dokladu.

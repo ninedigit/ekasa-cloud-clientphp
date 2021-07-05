@@ -1,10 +1,11 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
-use NineDigit\eKasa\Cloud\ApiClient\Models\ValidationProblemDetails;
-use NineDigit\eKasa\Cloud\ApiClient\Exceptions\ProblemDetailsException;
+namespace NineDigit\eKasa\Cloud\Client\Exceptions;
 
-class ValidationProblemDetailsException extends ProblemDetailsException {
+use NineDigit\eKasa\Cloud\Client\Models\ValidationProblemDetails;
+use NineDigit\eKasa\Cloud\Client\Exceptions\ProblemDetailsException;
+
+final class ValidationProblemDetailsException extends ProblemDetailsException {
     private ValidationProblemDetails $validationProblemDetails;
 
     public function __construct(ValidationProblemDetails $details, $code = 0, \Throwable $previous = null) {

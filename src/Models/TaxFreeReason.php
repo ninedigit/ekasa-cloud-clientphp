@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models;
 
 /**
  * Príznak, ktorý bližšie špecifikuje „dôvod“ priradenia dane s hodnotou 0, ak bola položke priradená

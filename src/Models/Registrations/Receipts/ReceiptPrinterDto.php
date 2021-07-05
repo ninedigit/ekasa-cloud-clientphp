@@ -1,26 +1,32 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
 
-final class ReceiptPrinterDto {
+use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
+
+/**
+ * @DiscriminatorMap(typeProperty="name", mapping={
+ *    "pos"="NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PosReceiptPrinterDto",
+ *    "pdf"="NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PdfReceiptPrinterDto",
+ *    "email"="NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\EmailReceiptPrinterDto"
+ * })
+ */
+abstract class ReceiptPrinterDto {
     /**
      * Názov tlačiarne, na ktorej bude doklad spracovaný.
      * Dostupné možnosti: pos, pdf, email.
      * @see ReceiptPrinterName
      */
     public string $name;
+
     /**
      * Nastavenia tlačiarne.
-     * Jednotlivé tlačiarne majú rozličné nastavenia a to:
-     * Tlačiareň "pos" používa PosReceiptPrinterOptions,
-     * tlačiareň "pdf" používa PdfReceiptPrinterOptions,
-     * tlačiareň "email" používate EmailReceiptPrinterOptions.
      */
-    public ?ReceiptPrinterOptions $options;
-
-    public function __construct(?string $name = "pos", ?ReceiptPrinterOptions $options = null) {
+    // public ?ReceiptPrinterOptions $options;
+    
+    public function __construct(?string $name/*, ?ReceiptPrinterOptions $options = null*/) {
         $this->name = $name;
-        $this->options = $options;
+        //$this->options = $options;
     }
 }
 

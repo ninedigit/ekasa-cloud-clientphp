@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
 final class ApiResponseMessage {
     public int $statusCode;

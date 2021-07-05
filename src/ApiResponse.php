@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-class ApiResponse {
+final class ApiResponse {
   public int $statusCode;
   public array $headers;
   public ?object $payload;

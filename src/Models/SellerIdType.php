@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models;
 
 /**
  * Typ identifikátora predávajúceho, v ktorého mene bol predaný tovar alebo poskytnutá služba.

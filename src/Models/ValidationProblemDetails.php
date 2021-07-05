@@ -1,11 +1,11 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models;
 
 /**
  * A Microsoft.AspNetCore.Mvc.ProblemDetails for validation errors.
  */
-class ValidationProblemDetails extends ProblemDetails {
+final class ValidationProblemDetails extends ProblemDetails {
     /**
      * Gets the validation errors associated with this instance
      * of ValidationProblemDetails.

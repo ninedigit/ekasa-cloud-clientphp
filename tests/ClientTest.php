@@ -1,22 +1,20 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-//use NineDigit\eKasa\Cloud\ApiClient;
-
-use NineDigit\eKasa\Cloud\ApiClient\Exceptions\ProblemDetailsException;
-use NineDigit\eKasa\Cloud\ApiClient\Models\CustomerDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\CustomerIdType;
-use NineDigit\eKasa\Cloud\ApiClient\Models\QuantityDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\CreateReceiptRegistrationRequestDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\EmailReceiptPrinterOptions;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptItemType;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptPrinterDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptPrinterName;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptRegistrationItemDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptRegistrationPaymentDto;
-use NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts\ReceiptType;
+use NineDigit\eKasa\Cloud\Client\Exceptions\ProblemDetailsException;
+use NineDigit\eKasa\Cloud\Client\Exceptions\ValidationProblemDetailsException;
+use NineDigit\eKasa\Cloud\Client\Models\CustomerDto;
+use NineDigit\eKasa\Cloud\Client\Models\CustomerIdType;
+use NineDigit\eKasa\Cloud\Client\Models\QuantityDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationRequestDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\EmailReceiptPrinterDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\EmailReceiptPrinterOptions;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptItemType;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationItemDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationPaymentDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptType;
 use PHPUnit\Framework\TestCase;
 
 final class ClientTest extends TestCase {
@@ -27,15 +25,15 @@ final class ClientTest extends TestCase {
         $privateKey = "388e98f5c56728266991583a6f8fcd1b9279cdc00b5c371bffc0ea402b14d954";
         $tenantId = "39fd0386-1c7b-5fb0-201f-36725cbfcacc";
 
-        $clientOptions = new ClientOptions($publicKey, $privateKey, $tenantId);
+        $clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId);
         $clientOptions->url = $url;
 
-        $client = new Client($clientOptions);
+        $client = new ApiClient($clientOptions);
 
         // Register receipt
 
         $printerOptions = new EmailReceiptPrinterOptions("mail@example.com");
-        $receiptPrinter = new ReceiptPrinterDto(ReceiptPrinterName::EMAIL, $printerOptions);
+        $receiptPrinter = new EmailReceiptPrinterDto($printerOptions);
         
         $receiptItem = new ReceiptRegistrationItemDto(
             ReceiptItemType::POSITIVE,

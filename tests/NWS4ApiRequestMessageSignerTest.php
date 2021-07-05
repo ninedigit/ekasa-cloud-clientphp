@@ -1,12 +1,12 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-//use NineDigit\eKasa\Cloud\ApiClient;
 use PHPUnit\Framework\TestCase;
-use NineDigit\eKasa\Cloud\ApiClient\Authentication\NWS4ApiRequestMessageSigner;
+use NineDigit\eKasa\Cloud\Client\DateTimeServiceInterface;
+use NineDigit\eKasa\Cloud\Client\Authentication\NWS4ApiRequestMessageSigner;
 
-class StaticDateTimeService implements IDateTimeService {
+class StaticDateTimeService implements DateTimeServiceInterface {
     private $dateTime;
 
     public function __construct(\DateTime $dateTime) {

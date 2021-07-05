@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models;
 
-abstract class GuidEnityDto {
+abstract class GuidEntityDto {
     /**
      * Unikátny identifikátor modelu
      */

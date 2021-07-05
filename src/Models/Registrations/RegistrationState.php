@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations;
 
 /**
  * Stav zaevidovania požiadavky.

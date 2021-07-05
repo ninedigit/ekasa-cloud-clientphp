@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-class ApiRequestMessage {
+final class ApiRequestMessage {
   public $method;
   public $url;
   public $body = '';

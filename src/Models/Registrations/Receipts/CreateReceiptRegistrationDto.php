@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
 
 final class CreateReceiptRegistrationDto {
     /**
@@ -20,12 +20,12 @@ final class CreateReceiptRegistrationDto {
     public int $validityTimeSpan;
 
     public function __construct(
-        ?ReceiptPrinterDto $printer = null,
-        ?CreateReceiptRegistrationRequestDto $request = null,
+        ReceiptPrinterDto $printer,
+        ?CreateReceiptRegistrationRequestDto $request,
         int $validityTimeSpan = 5000
     ) {
-        $this->printer = $printer ?? new ReceiptPrinterDto();
-        $this->request = $request ?? new CreateReceiptRegistrationRequestDto();
+        $this->printer = $printer;
+        $this->request = $request;
         $this->validityTimeSpan = $validityTimeSpan;
     }
 }

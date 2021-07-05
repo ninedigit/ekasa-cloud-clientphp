@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-class ClientOptions {
+final class ApiClientOptions {
   public const DEFAULT_URL = "http://cloud-ekasa.ninedigit.sk/api";
   public const DEFAULT_TENANT_KEY = "__tenant";
 
@@ -21,8 +21,8 @@ class ClientOptions {
     $this->publicKey = $publicKey;
     $this->privateKey = $privateKey;
     $this->tenantId = $tenantId;
-    $this->url = ClientOptions::DEFAULT_URL;
-    $this->tenantKey = ClientOptions::DEFAULT_TENANT_KEY;
+    $this->url = ApiClientOptions::DEFAULT_URL;
+    $this->tenantKey = ApiClientOptions::DEFAULT_TENANT_KEY;
   }
 }
 

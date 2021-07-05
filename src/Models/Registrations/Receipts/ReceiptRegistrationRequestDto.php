@@ -1,7 +1,7 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts;
-use NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
+use NineDigit\eKasa\Cloud\Client\Models;
 
 final class ReceiptRegistrationRequestDto {
     /**
@@ -31,7 +31,7 @@ final class ReceiptRegistrationRequestDto {
      * V prípade evidovania paragónu v ORP sa očakáva tento dátum neskorší 
      * ako dátum vyhotovenia paragónu.
      */
-    public \DateTime $orpCreateDate;
+    public ?\DateTime $orpCreateDate;
     /**
      * Poradové číslo dokladu.
      * Pri požiadavke aj odpovedi k registrácií dokladu nadobúda rovnakú 

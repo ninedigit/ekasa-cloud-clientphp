@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-class ApiRequestBuilder {
+final class ApiRequestBuilder {
   private ApiRequestHeadersBuilder $headersBuilder;
   private string $method;
   private string $url;

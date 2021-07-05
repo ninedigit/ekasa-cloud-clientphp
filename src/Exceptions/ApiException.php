@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Exceptions;
+namespace NineDigit\eKasa\Cloud\Client\Exceptions;
 
 class ApiException extends \Exception {
     /**

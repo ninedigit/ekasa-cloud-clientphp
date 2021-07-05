@@ -1,8 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient;
+namespace NineDigit\eKasa\Cloud\Client;
 
-class ApiRequestHeadersBuilder {
+final class ApiRequestHeadersBuilder {
   private array $headers;
 
   public function __construct(array $defaultHeaders = array()) {

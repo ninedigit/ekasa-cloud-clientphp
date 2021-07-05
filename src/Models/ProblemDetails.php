@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models;
 
 /**
  * A machine-readable format for specifying errors in HTTP API responses based on

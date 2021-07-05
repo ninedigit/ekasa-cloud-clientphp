@@ -1,7 +1,7 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Models\Registrations\Receipts;
-use NineDigit\eKasa\Cloud\ApiClient\Models;
+namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
+use NineDigit\eKasa\Cloud\Client\Models;
 
 final class CreateReceiptRegistrationRequestDto {
     /**

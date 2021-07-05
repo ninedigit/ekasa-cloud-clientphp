@@ -2,20 +2,21 @@
 
 // Inspired by: https://github.com/aws/aws-sdk-php/blob/master/src/Signature/SignatureV4.php
 
-namespace NineDigit\eKasa\Cloud\ApiClient\Authentication;
-use NineDigit\eKasa\Cloud\ApiClient\Authentication;
-use NineDigit\eKasa\Cloud\ApiClient\IDateTimeService;
-use NineDigit\eKasa\Cloud\ApiClient\LocalDateTimeService;
-use NineDigit\eKasa\Cloud\ApiClient\ApiRequestMessage;
+namespace NineDigit\eKasa\Cloud\Client\Authentication;
 
-class NWS4ApiRequestMessageSigner implements Authentication\IApiRequestMessageSigner {
+use NineDigit\eKasa\Cloud\Client\Authentication\ApiRequestMessageSignerInterface;
+use NineDigit\eKasa\Cloud\Client\DateTimeServiceInterface;
+use NineDigit\eKasa\Cloud\Client\LocalDateTimeService;
+use NineDigit\eKasa\Cloud\Client\ApiRequestMessage;
+
+final class NWS4ApiRequestMessageSigner implements ApiRequestMessageSignerInterface {
     private const emptyBodyHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
   
     private string $publicKey;
     private string $privateKey;
-    private IDateTimeService $dateTimeService;
+    private DateTimeServiceInterface $dateTimeService;
   
-    public function __construct(string $publicKey, string $privateKey, ?IDateTimeService $dateTimeService = null) {
+    public function __construct(string $publicKey, string $privateKey, ?DateTimeServiceInterface $dateTimeService = null) {
       $this->publicKey = $publicKey;
       $this->privateKey = $privateKey;
       $this->dateTimeService = $dateTimeService ?? new LocalDateTimeService();
