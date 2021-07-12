@@ -45,9 +45,14 @@ final class RegistrationState {
      */
     public const PROCESSED_OFFLINE = "processedOffline";
     /**
+     * Požiadavka na zaevidovanie dokladu alebo polohy zlyhala zo
+     * strany ORP.
+     */
+    public const PROCESS_FAILED = "processFailed";
+    /**
      * Požiadavka na zaevidovanie dokladu alebo polohy zlyhala.
      */
-    public const FAULTED = "faulted";
+    public const FAILED = "failed";
 
     private function __construct() {
     }

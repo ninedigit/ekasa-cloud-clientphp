@@ -28,6 +28,7 @@ final class ApiClient {
     ) {
     $this->url = $options->url;
     $this->client = new GuzzleHttpClient([
+      "proxy" => $options->proxyUrl
       //'base_uri' => $this->url
     ]);
 
@@ -71,7 +72,7 @@ final class ApiClient {
         $request->headers,
         $request->body);
 
-      $guzzleResponse = $this->client->send($guzzleRequest, ['debug' => true, 'proxy' => "127.0.0.1:8888"]); // Use 'proxy' => "127.0.0.1:8888" option when debugging
+      $guzzleResponse = $this->client->send($guzzleRequest, ['debug' => true]);
       $body = $guzzleResponse->getBody();
     } catch (RequestException $ex) {
       if ($ex->hasResponse()) {

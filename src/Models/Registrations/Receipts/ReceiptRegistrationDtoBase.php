@@ -1,7 +1,10 @@
 <?php
 
 namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
+
 use NineDigit\eKasa\Cloud\Client\Models\GuidEntityDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationErrorDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationState;
 
 abstract class ReceiptRegistrationDtoBase extends GuidEntityDto {
     /**
@@ -52,10 +55,35 @@ abstract class ReceiptRegistrationDtoBase extends GuidEntityDto {
     public ?\DateTime $completionDate;
     /**
      * Stav požiadavky evidencie dokladu.
-     * @var Models\Registrations\RegistrationState
+     * @var RegistrationState
      * @example Accepted
      */
     public string $state;
+    /**
+     * Informácie o chybe pre požiadavku v stave Failed.
+     * @var RegistrationErrorDto
+     */
+    public ?RegistrationErrorDto $error;
+
+    //
+
+    public function isCompleted(): bool {
+        return $this->isCompletedSuccessfully()
+            || $this->isCompletedUnsuccessfully();
+    }
+
+    public function isCompletedSuccessfully(): bool {
+        return $this->state === RegistrationState::PROCESSED
+            || $this->state === RegistrationState::PROCESSED_OFFLINE;
+    }
+
+    public function isCompletedUnsuccessfully(): bool {
+        return $this->state === RegistrationState::EXPIRED
+            || $this->state === RegistrationState::TIMED_OUT
+            || $this->state === RegistrationState::CANCELED
+            || $this->state === RegistrationState::FAILED
+            || $this->state === RegistrationState::PROCESS_FAILED;
+    }
 }
 
 ?>

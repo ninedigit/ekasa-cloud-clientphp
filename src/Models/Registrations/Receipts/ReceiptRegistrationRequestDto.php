@@ -2,6 +2,7 @@
 
 namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
 use NineDigit\eKasa\Cloud\Client\Models;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\EKasaErrorDto;
 
 final class ReceiptRegistrationRequestDto {
     /**
@@ -147,6 +148,11 @@ final class ReceiptRegistrationRequestDto {
      * systémom e-Kasa.
      */
     public ?\DateTime $orpProcessDate;
+    /**
+     * Chybová správa zo systému e-Kasa.
+     * @var EKasaErrorDto
+     */
+    public ?EKasaErrorDto $eKasaError;
 }
 
 ?>

@@ -21,11 +21,13 @@ final class ClientTest extends TestCase {
 
     public function testReceiptRegistration() {
         $url = "http://localhost:5000/api";
+        $proxyUrl = "127.0.0.1:8888"; // Fiddler
         $publicKey = "8248d4058e36840bea23ebbe3e602f6e";
         $privateKey = "388e98f5c56728266991583a6f8fcd1b9279cdc00b5c371bffc0ea402b14d954";
         $tenantId = "39fd0386-1c7b-5fb0-201f-36725cbfcacc";
 
         $clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId);
+        $clientOptions->proxyUrl = $proxyUrl;
         $clientOptions->url = $url;
 
         $client = new ApiClient($clientOptions);
