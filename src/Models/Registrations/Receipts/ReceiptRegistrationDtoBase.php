@@ -64,24 +64,39 @@ abstract class ReceiptRegistrationDtoBase extends GuidEntityDto {
      * @var RegistrationErrorDto
      */
     public ?RegistrationErrorDto $error;
-
-    //
-
+    /**
+     * Dôvod zamietnutia spracovania požiadavky zo strany ORP.
+     * Hodnota je k dispozícií pre požiadavku v stave ProcessCanceled,
+     * inak null.
+     * @var RegistrationCancellationReasonDto
+     */
+    public ?RegistrationCancellationReasonDto $processCancellationReason;
+    
+    /**
+     * Indikuje spracovanie požiadavky.
+     */
     public function isCompleted(): bool {
         return $this->isCompletedSuccessfully()
             || $this->isCompletedUnsuccessfully();
     }
 
+    /**
+     * Indikuje úspešné spracovanie požiadavky.
+     */
     public function isCompletedSuccessfully(): bool {
         return $this->state === RegistrationState::PROCESSED
             || $this->state === RegistrationState::PROCESSED_OFFLINE;
     }
 
+    /**
+     * Indikuje neúspešné spracovanie požiadavky.
+     */
     public function isCompletedUnsuccessfully(): bool {
         return $this->state === RegistrationState::EXPIRED
             || $this->state === RegistrationState::TIMED_OUT
             || $this->state === RegistrationState::CANCELED
             || $this->state === RegistrationState::FAILED
+            || $this->state === RegistrationState::PROCESS_CANCELED
             || $this->state === RegistrationState::PROCESS_FAILED;
     }
 }

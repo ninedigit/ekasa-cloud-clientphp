@@ -10,9 +10,9 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationStateChangeResultDto;
 use NineDigit\eKasa\Cloud\Client\Serialization\SerializerInterface;
 use NineDigit\eKasa\Cloud\Client\Serialization\SymfonyJsonSerializer;
-
 
 final class ApiClient {
   private ApiRequestMessageSignerInterface $requestMessageSigner;
@@ -41,6 +41,11 @@ final class ApiClient {
     $this->defaultHttpHeaders[$options->tenantKey] = $options->tenantId;
   }
 
+  /**
+   * Zadá požiadavku na zaregistrovanie dokladu.
+   * @throws ValidationProblemDetailsException ak nie je požiadavka valídna
+   * @throws ProblemDetailsException
+   */
   public function registerReceipt(CreateReceiptRegistrationDto $receipt): ReceiptRegistrationDto {
     $apiRequest = ApiRequestBuilder::createPost("/v1/registrations/receipts", $this->defaultHttpHeaders)
       ->withHeaders(function ($builder) {
@@ -54,6 +59,29 @@ final class ApiClient {
 
     $apiResponseMessage = $this->sendRequestMessage($apiRequestMessage);
     $result = $this->deserializeJsonApiResponseMessage($apiResponseMessage, ReceiptRegistrationDto::class);
+
+    return $result;
+  }
+
+  /**
+   * Zruší zadanú požidavku na zaregistrovanie dokladu.
+   * Požiadavku je možné zrušiť iba ak je v stave Created alebo Notified
+   * a teda ešte pred samotným akceptovaním registračnou pokladňou.
+   * @throws ProblemDetailsException
+   */
+  public function cancelReceipt(string $cashRegisterCode, string $externalId): ReceiptRegistrationStateChangeResultDto {
+    $url = "/v1/registrations/receipts/cancel?cashRegisterCode=${cashRegisterCode}&externalId=${externalId}";
+    $apiRequest = ApiRequestBuilder::createPost($url, $this->defaultHttpHeaders)
+    ->withHeaders(function ($builder) {
+      $builder->accept('application/json');
+    })
+    ->build();
+  
+    $apiRequestMessage = $this->createJsonApiRequestMessage($apiRequest);
+    $this->signRequestMessage($apiRequestMessage);
+
+    $apiResponseMessage = $this->sendRequestMessage($apiRequestMessage);
+    $result = $this->deserializeJsonApiResponseMessage($apiResponseMessage, ReceiptRegistrationStateChangeResultDto::class);
 
     return $result;
   }

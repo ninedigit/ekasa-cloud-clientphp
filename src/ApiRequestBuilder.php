@@ -12,6 +12,7 @@ final class ApiRequestBuilder {
     $this->headersBuilder = new ApiRequestHeadersBuilder($defaultHeaders);
     $this->method = $method;
     $this->url = $url;
+    $this->payload = null;
   }
 
   function withPayload(?object $payload): ApiRequestBuilder {
