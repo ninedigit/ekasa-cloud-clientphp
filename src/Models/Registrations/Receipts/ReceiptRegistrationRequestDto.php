@@ -16,7 +16,7 @@ final class ReceiptRegistrationRequestDto {
     public string $cashRegisterCode;
     /**
      * Typ pokladničného dokladu.
-     * @var ReceiptType
+     * @see ReceiptType
      * @example CashRegister
      */
     public string $receiptType;
@@ -71,7 +71,7 @@ final class ReceiptRegistrationRequestDto {
     /**
      * Identifikácia kupujúceho.
      */
-    public ?Models\CustomerDto $customerDto;
+    public ?Models\CustomerDto $customer;
     /**
      * Celková suma DPH pre základnú sadzbu dane podľa zákona 
      * č. 222/2004 Z.z.
@@ -98,12 +98,12 @@ final class ReceiptRegistrationRequestDto {
     public ?float $taxBaseReduced;
     /**
      * Položky dokladu.
-     * @var ReceiptRegistrationItemDto[] alebo null.
+     * @var ?ReceiptRegistrationItemDto[]
      */
     public ?array $items;
     /**
      * Platidlá.
-     * @var ReceiptRegistrationPaymentDto[] alebo null.
+     * @var ?ReceiptRegistrationPaymentDto[]
      */
     public ?array $payments;
     /**
@@ -150,7 +150,6 @@ final class ReceiptRegistrationRequestDto {
     public ?\DateTime $orpProcessDate;
     /**
      * Chybová správa zo systému e-Kasa.
-     * @var EKasaErrorDto
      */
     public ?EKasaErrorDto $eKasaError;
 }

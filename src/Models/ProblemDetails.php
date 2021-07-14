@@ -36,6 +36,8 @@ class ProblemDetails {
     public ?string $instance = '';
 
     // TODO: Extensions
+
+    public ?string $traceId = null;
 }
 
 ?>

@@ -55,22 +55,21 @@ abstract class ReceiptRegistrationDtoBase extends GuidEntityDto {
     public ?\DateTime $completionDate;
     /**
      * Stav požiadavky evidencie dokladu.
-     * @var RegistrationState
+     * @see RegistrationState
      * @example Accepted
      */
     public string $state;
     /**
      * Informácie o chybe pre požiadavku v stave Failed.
-     * @var RegistrationErrorDto
      */
     public ?RegistrationErrorDto $error;
     /**
      * Dôvod zamietnutia spracovania požiadavky zo strany ORP.
-     * Hodnota je k dispozícií pre požiadavku v stave ProcessCanceled,
+     * Hodnota je k dispozícií pre požiadavku v stave Rejected,
      * inak null.
-     * @var RegistrationCancellationReasonDto
+     * @var ?RegistrationRejectionReasonDto
      */
-    public ?RegistrationCancellationReasonDto $processCancellationReason;
+    public ?RegistrationRejectionReasonDto $rejectionReason;
     
     /**
      * Indikuje spracovanie požiadavky.
@@ -96,7 +95,7 @@ abstract class ReceiptRegistrationDtoBase extends GuidEntityDto {
             || $this->state === RegistrationState::TIMED_OUT
             || $this->state === RegistrationState::CANCELED
             || $this->state === RegistrationState::FAILED
-            || $this->state === RegistrationState::PROCESS_CANCELED
+            || $this->state === RegistrationState::REJECTED
             || $this->state === RegistrationState::PROCESS_FAILED;
     }
 }

@@ -6,7 +6,7 @@ use NineDigit\eKasa\Cloud\Client\Models;
 final class ReceiptRegistrationItemDto {
     /**
      * Typ položky dokladu
-     * @var ReceiptItemType
+     * @see ReceiptItemType
      * @example Positive
      */
     public string $type;
@@ -61,7 +61,7 @@ final class ReceiptRegistrationItemDto {
      * Hodnota môže byť uvedená iba pre položky s nulovou sadzbou dane.
      * @example Artwork
      */
-    public ?string $taxFreeReason;
+    public ?string $specialRegulation;
     /**
      * Číslo jednoúčelového poukazu pri jeho výmene za tovar alebo poskytnutú službu.
      * Textový reťazec s dĺžkou 1 až 50 v prípade, že typ položky je Voucher,

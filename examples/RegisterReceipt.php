@@ -119,7 +119,7 @@ else if ($receiptRegistration->state === RegistrationState::FAILED) {
   throw new Error(`Spracovanie požiadavky zlyhalo: ${errorMessage}.`);
 }
 else {
-  // Odpoveď môže byť v jednom zo stavov: EXPIRED, TIMED_OUT, CANCELED alebo FAILED.
+  // Odpoveď môže byť v jednom zo stavov: Expired, Canceled, TimedOut, Rejected alebo Failed.
 }
 
 ?>

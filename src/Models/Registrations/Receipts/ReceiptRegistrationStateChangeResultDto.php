@@ -10,7 +10,6 @@ final class ReceiptRegistrationStateChangeResultDto {
   /**
    * Požiadavka registrácie.
    * Hodnota je null, ak požiadavka nebola nájdená.
-   * @var ?ReceiptRegistrationDto
    */
   public ?ReceiptRegistrationDto $registration;
 }

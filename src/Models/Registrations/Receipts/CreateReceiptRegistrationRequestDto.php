@@ -18,7 +18,7 @@ final class CreateReceiptRegistrationRequestDto {
     public string $cashRegisterCode;
     /**
      * Typ pokladničného dokladu.
-     * @var ReceiptType
+     * @see ReceiptType
      * @example CashRegister
      */
     public string $receiptType;
@@ -68,14 +68,14 @@ final class CreateReceiptRegistrationRequestDto {
      * Ak zoznam obsahuje zľavnené položky, ich celková suma musí byť nižšia alebo rovná 
      * sume kladných položiek. Ak zoznam obsahuje kupóny, musia byť v rovnakej sadzbe 
      * DPH, ako zaevidované položky, ku ktorým sa kupóny vzťahujú.
-     * @var ReceiptRegistrationItemDto[] alebo null
+     * @var ?ReceiptRegistrationItemDto[]
      */
     public ?array $items;
     /**
      * Zoznam platidiel.
      * Zoznam platidiel, ktorého suma hodnôt každého platidla musí byť vyššia alebo rovná 
      * sume cien všetkých položiek dokladu.
-     * @var ReceiptRegistrationPaymentDto[] alebo null
+     * @var ?ReceiptRegistrationPaymentDto[]
      */
     public ?array $payments;
 

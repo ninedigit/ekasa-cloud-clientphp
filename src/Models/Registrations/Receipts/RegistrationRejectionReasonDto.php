@@ -6,7 +6,7 @@ namespace NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
 /**
  * Dôvod zamietnutia spracovania požiadavky zo strany ORP.
  */
-final class RegistrationCancellationReasonDto {
+final class RegistrationRejectionReasonDto {
     /**
      * Dôvod zamietnutia spracovania požiadavky.
      */

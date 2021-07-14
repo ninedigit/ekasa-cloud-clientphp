@@ -10,7 +10,7 @@ final class RegistrationErrorDto {
     /**
      * Kód chybovej správy.
      */
-    public ?int $code;
+    public ?string $code;
     /**
      * Pôvod chybovej správy.
      */

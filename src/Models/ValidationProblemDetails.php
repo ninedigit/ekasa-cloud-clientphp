@@ -9,7 +9,7 @@ final class ValidationProblemDetails extends ProblemDetails {
     /**
      * Gets the validation errors associated with this instance
      * of ValidationProblemDetails.
-     * @var array of string keys and string containing array values
+     * @var array
      * @example array("field1" => array("error1", "error2"))
      */
     public array $errors;

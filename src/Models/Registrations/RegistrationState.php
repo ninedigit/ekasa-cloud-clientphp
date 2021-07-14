@@ -39,7 +39,7 @@ final class RegistrationState {
      * Požiadavka na zaevidovanie dokladu alebo polohy bolo zamietnutá
      * zo strany ORP.
      */
-    public const PROCESS_CANCELED = "ProcessCanceled";
+    public const REJECTED = "Rejected";
     /**
      * Požiadavka na zaevidovanie dokladu alebo polohy bola úspešne vybavená.
      */
