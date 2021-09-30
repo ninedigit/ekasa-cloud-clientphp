@@ -45,6 +45,7 @@ final class ApiClientOptions {
     $this->publicKey = $publicKey;
     $this->privateKey = $privateKey;
     $this->tenantId = $tenantId;
+    $this->proxyUrl = null;
     $this->url = ApiClientOptions::DEFAULT_URL;
     $this->tenantKey = ApiClientOptions::DEFAULT_TENANT_KEY;
   }

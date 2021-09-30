@@ -27,10 +27,16 @@ final class ApiClient {
     ?SerializerInterface $serializer = null
     ) {
     $this->url = $options->url;
-    $this->client = new GuzzleHttpClient([
-      "proxy" => $options->proxyUrl
+
+    $guzzleHttpClientConfig = [
       //'base_uri' => $this->url
-    ]);
+    ];
+
+    if (!empty($options->proxyUrl)) {
+      $guzzleHttpClientConfig["proxy"] = $options->proxyUrl;
+    }
+
+    $this->client = new GuzzleHttpClient($guzzleHttpClientConfig);
 
     $this->requestMessageSigner = $requestMessageSigner
       ?? new NWS4ApiRequestMessageSigner($options->publicKey, $options->privateKey);
