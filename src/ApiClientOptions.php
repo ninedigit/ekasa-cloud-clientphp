@@ -3,12 +3,20 @@
 namespace NineDigit\eKasa\Cloud\Client;
 
 final class ApiClientOptions {
-  public const DEFAULT_URL = "https://cloud-ekasa.ninedigit.sk/api";
+  /**
+   * @deprecated Bude odstránená v nasledujúcej verzií. Náhradou je CloudEnvironment
+   */
+  public const DEFAULT_URL = CloudEnvironment::PRODUCTION;
+
+  /**
+   * @deprecated Bude odstránená v nasledujúcej verzií
+   */
   public const DEFAULT_TENANT_KEY = "__tenant";
 
   /**
-   * Adresa servera eKasa Cloud
-   * @example https://cloud-ekasa.ninedigit.sk/api
+   * Url adresa e-Kasa Cloud servera
+   * @example "https://ekasa-cloud.ninedigit.sk/api"
+   * @see CloudEnvironment
    */
   public string $url;
   /**
@@ -34,6 +42,7 @@ final class ApiClientOptions {
    * Kĺúč, pod ktorým bude vyhľadaný identifikátor
    * skupiny koncových zariadení
    * @example __tenant
+   * @deprecated Bude odstránená v nasledujúcej verzií
    */
   public string $tenantKey;
 

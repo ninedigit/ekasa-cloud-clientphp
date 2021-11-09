@@ -8,6 +8,8 @@ use NineDigit\eKasa\Cloud\Client\Exceptions\ValidationProblemDetailsException;
 use \GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use NineDigit\eKasa\Cloud\Client\Models\ProblemDetails;
+use NineDigit\eKasa\Cloud\Client\Models\ValidationProblemDetails;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationStateChangeResultDto;

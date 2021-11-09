@@ -24,7 +24,7 @@ final class SymfonyJsonSerializer implements SerializerInterface {
     $normalizers = [
         new ArrayDenormalizer(),
         new CloudDateTimeNormalizer(),
-        new ObjectNormalizer($classMetadataFactory, null, null, $extractor, $discriminator),
+        new ObjectNormalizer($classMetadataFactory, null, null, $extractor, $discriminator)
     ];
     $this->serializer = new Serializer($normalizers, [
         'json' => new JsonEncoder()

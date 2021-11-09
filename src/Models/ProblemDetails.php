@@ -2,6 +2,8 @@
 
 namespace NineDigit\eKasa\Cloud\Client\Models;
 
+use \ApiErrorCode;
+
 /**
  * A machine-readable format for specifying errors in HTTP API responses based on
  * https://tools.ietf.org/html/rfc7807.
@@ -36,6 +38,12 @@ class ProblemDetails {
     public ?string $instance = '';
 
     // TODO: Extensions
+
+    /**
+     * Kód chybovej správy
+     * @see ApiErrorCode
+     */
+    public ?int $code = null;
 
     public ?string $traceId = null;
 }

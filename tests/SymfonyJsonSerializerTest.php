@@ -2,7 +2,6 @@
 
 namespace NineDigit\eKasa\Cloud\Client;
 
-use \DateTimeZone;
 use NineDigit\eKasa\Cloud\Client\Models\CustomerDto;
 use NineDigit\eKasa\Cloud\Client\Models\CustomerIdType;
 use NineDigit\eKasa\Cloud\Client\Models\QuantityDto;
@@ -22,6 +21,8 @@ use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationErrorDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationState;
 use NineDigit\eKasa\Cloud\Client\Models\SellerDto;
 use NineDigit\eKasa\Cloud\Client\Models\SellerIdType;
+use NineDigit\eKasa\Cloud\Client\ApiErrorCode;
+use NineDigit\eKasa\Cloud\Client\Models\ProblemDetails;
 use NineDigit\eKasa\Cloud\Client\Models\ValidationProblemDetails;
 use NineDigit\eKasa\Cloud\Client\Serialization\SymfonyJsonSerializer;
 
@@ -265,6 +266,29 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertEquals("One or more validation errors occurred.", $details->title);
     $this->assertEquals(400, $details->status);
     $this->assertEquals("00-3883c3382a81f24ca6ac58a375d6de64-d99c7a32e359d24f-00", $details->traceId);
+  }
+
+  public function testProblemDetailsDeserialization() {
+    $serializer = new SymfonyJsonSerializer();
+    $type = ProblemDetails::class;
+
+    $json = '{
+      "title": "Tenant not found!",
+      "status": 403,
+      "instance": "/api/v1/registrations/receipts",
+      "code": -101,
+      "traceId": "0HMCTVDF5NB0B:00000002"
+    }';
+
+    $details = $serializer->deserialize($json, $type);
+
+    $this->assertInstanceOf(ProblemDetails::class, $details);
+
+    $this->assertEquals("Tenant not found!", $details->title);
+    $this->assertEquals(403, $details->status);
+    $this->assertEquals("/api/v1/registrations/receipts", $details->instance);
+    $this->assertEquals(ApiErrorCode::TENANT_NOT_FOUND, $details->code);
+    $this->assertEquals("0HMCTVDF5NB0B:00000002", $details->traceId);
   }
 
   private function createUtcDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second = 0, int $microsecond = 0): \DateTime {
