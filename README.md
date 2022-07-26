@@ -3,6 +3,10 @@
 
 HTTP klient pre e-Kasa cloudové riešenie spoločnosti [Nine Digit, s.r.o.](https://ekasa.ninedigit.sk/)
 
+# Testovanie
+
+`./vendor/bin/phpunit --verbose tests`
+
 # Inštalácia
 
 Upravte súbor `composer.json` a pridajte nový repozitár:
