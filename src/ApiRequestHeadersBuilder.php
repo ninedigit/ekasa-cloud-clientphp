@@ -9,7 +9,7 @@ final class ApiRequestHeadersBuilder {
     $this->headers = $defaultHeaders;
   }
 
-  public function setDefault(array $defaultHeaders): ApiRequestHeadersBuilder {
+  public function set(array $defaultHeaders): ApiRequestHeadersBuilder {
     foreach ($defaultHeaders as $key => $value) {
       $this->headers[$key] = $value;
     }

@@ -3,6 +3,8 @@
 namespace NineDigit\eKasa\Cloud\Client\Serialization;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -18,6 +20,9 @@ final class SymfonyJsonSerializer implements SerializerInterface {
   private Serializer $serializer;
 
   function __construct() {
+    // Deprecated and will be removed in 2.0 but currently needed
+    AnnotationRegistry::registerLoader('class_exists');
+
     $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
     $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
     $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);

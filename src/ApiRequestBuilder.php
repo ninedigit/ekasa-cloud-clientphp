@@ -2,6 +2,8 @@
 
 namespace NineDigit\eKasa\Cloud\Client;
 
+use NineDigit\eKasa\Cloud\Client\HttpMethod;
+
 final class ApiRequestBuilder {
   private ApiRequestHeadersBuilder $headersBuilder;
   private string $method;
@@ -20,13 +22,18 @@ final class ApiRequestBuilder {
     return $this;
   }
 
-  function withDefaultHeaders(array $defaultHeaders): ApiRequestBuilder {
-    $this->headersBuilder->setDefault($defaultHeaders);
-    return $this;
-  }
-
-  function withHeaders(callable $callable): ApiRequestBuilder {
-    $callable($this->headersBuilder);
+  /**
+   * Metóda na nastavenie hlavičiek
+   * @param mixed $headersOrCallable Pole hlavičiek alebo vyvolateľná funkcia preberajúca ApiRequestHeadersBuilder.
+   */
+  function withHeaders(mixed $headersOrCallable): ApiRequestBuilder {
+    if (is_callable($headersOrCallable)) {
+      $headersOrCallable($this->headersBuilder);
+    } else if (is_array($headers)) {
+      $this->headersBuilder->set($defaultHeaders);
+    } else {
+      throw new \InvalidArgumentException("Expecting array or callable as an argument.");
+    }
     return $this;
   }
 
@@ -37,8 +44,28 @@ final class ApiRequestBuilder {
     return $apiRequest;
   }
 
+  public static function createGet(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::GET, $url, $defaultHeaders);
+  }
+
   public static function createPost(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
-    return new ApiRequestBuilder("POST", $url, $defaultHeaders);
+    return new ApiRequestBuilder(HttpMethod::POST, $url, $defaultHeaders);
+  }
+
+  public static function createPut(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::PUT, $url, $defaultHeaders);
+  }
+
+  public static function createDelete(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::DELETE, $url, $defaultHeaders);
+  }
+
+  public static function fromApiRequest(ApiRequest $apiRequest, array $defaultHeaders = array()): ApiRequestBuilder {
+    $headers = array_merge($defaultHeaders, $apiRequest->headers);
+    $builder = new ApiRequestBuilder($apiRequest->method, $apiRequest->url, $headers);
+    $builder->withPayload($apiRequest->payload);
+
+    return $builder;
   }
 }
 

@@ -98,12 +98,12 @@ final class ReceiptRegistrationRequestDto {
     public ?float $taxBaseReduced;
     /**
      * Položky dokladu.
-     * @var ?ReceiptRegistrationItemDto[]
+     * @var ReceiptRegistrationItemDto[]
      */
     public ?array $items;
     /**
      * Platidlá.
-     * @var ?ReceiptRegistrationPaymentDto[]
+     * @var ReceiptRegistrationPaymentDto[]
      */
     public ?array $payments;
     /**

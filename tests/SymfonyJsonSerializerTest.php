@@ -2,7 +2,11 @@
 
 namespace NineDigit\eKasa\Cloud\Client;
 
+use NineDigit\eKasa\Cloud\Client\Models\CreditDto;
 use NineDigit\eKasa\Cloud\Client\Models\CustomerDto;
+use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerDto as Customer;
+use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerCompanyDto;
+use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerAddressDto;
 use NineDigit\eKasa\Cloud\Client\Models\CustomerIdType;
 use NineDigit\eKasa\Cloud\Client\Models\QuantityDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\EKasaErrorDto;
@@ -127,13 +131,13 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $receiptRegistration = $serializer->deserialize($json, $type);
 
     $this->assertInstanceOf(ReceiptRegistrationDto::class, $receiptRegistration);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 19, 49, 643213), $receiptRegistration->creationDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 19, 49, 643213), $receiptRegistration->creationDate);
     $this->assertIsString("39fd0e35-c06a-7c3b-3bf7-acd229d31764", $receiptRegistration->createdBy);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->notificationDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->notificationDate);
     $this->assertEquals(3600000, $receiptRegistration->validityTimeSpan);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->acceptationDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->acceptationDate);
     $this->assertEquals(1000, $receiptRegistration->completionTimeSpan);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->completionDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->completionDate);
     $this->assertEquals(RegistrationState::CANCELED, $receiptRegistration->state);
 
     $this->assertInstanceOf(RegistrationErrorDto::class, $receiptRegistration->error);
@@ -153,8 +157,8 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertEquals("e52ff4d1-f2ed-4493-9e9a-a73739b1ba69", $receiptRegistration->request->externalId);
     $this->assertEquals(ReceiptType::CASH_REGISTER, $receiptRegistration->request->receiptType);
     $this->assertEquals(2.58, $receiptRegistration->request->amount);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->request->issueDate);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->request->orpCreateDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->request->issueDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 14, 8, 20, 3, 801665), $receiptRegistration->request->orpCreateDate);
     $this->assertEquals(1, $receiptRegistration->request->receiptNumber);
     $this->assertEquals(1, $receiptRegistration->request->paragonNumber);
     $this->assertEquals("FA-0001", $receiptRegistration->request->invoiceNumber);
@@ -219,10 +223,10 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertEquals("Nine Digit, s.r.o.", $receiptRegistration->request->headerText);
     $this->assertEquals("Otvorené non-stop.", $receiptRegistration->request->footerText);
     $this->assertEquals("bf4e7cbb-fccb-4794-bb19-b31814265892", $receiptRegistration->request->requestId);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 9, 12, 42, 48, 540872), $receiptRegistration->request->requestDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 9, 12, 42, 48, 540872), $receiptRegistration->request->requestDate);
     $this->assertEquals(1, $receiptRegistration->request->sendingCount);
     $this->assertEquals("O-7DBCDA8A56EE426DBCDA8A56EE426D1A", $receiptRegistration->request->receiptId);
-    $this->assertEquals($this->createUtcDateTime(2021, 7, 9, 12, 42, 49), $receiptRegistration->request->orpProcessDate);
+    $this->assertEquals(DateTimeHelper::createUtc(2021, 7, 9, 12, 42, 49), $receiptRegistration->request->orpProcessDate);
 
     $this->assertInstanceOf(EKasaErrorDto::class, $receiptRegistration->request->eKasaError);
     $this->assertEquals("Chyba v podpise dátovej správy.", $receiptRegistration->request->eKasaError->message);
@@ -233,6 +237,235 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertEquals(ReceiptPrinterName::EMAIL, $receiptRegistration->printer->name);
     $this->assertInstanceOf(EmailReceiptPrinterOptions::class, $receiptRegistration->printer->options);
     $this->assertEquals("mail@example.com", $receiptRegistration->printer->options->to);
+  }
+
+  public function testCustomerDtoDeserialization() {
+    $serializer = new SymfonyJsonSerializer();
+    $type = Customer::class;
+
+    $json = '{
+      "id": "3a0537ea-ce28-5636-85ea-a33b27f9958c",
+      "creationTime": "2022-07-22T11:49:42Z",
+      "creatorId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+      "lastModificationTime": "2022-07-22T13:09:48Z",
+      "lastModifierId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+      "concurrencyStamp": "ad6c3d54d87044dbb55ccc77a9791b5a",
+      "tenantId": "3a053799-6da6-6458-c289-8dcfd9de42cc",
+      "isActive": true,
+      "status": "Valid",
+      "externalId": "1:Petovskys-iMac:62d5542c9c104378d6db9a79:",
+      "isCompany": true,
+      "company": {
+          "name": "Company, s.r.o.",
+          "crn": "1234567890",
+          "vatId": "SK9876543210",
+          "taxId": "9876543210"
+      },
+      "creditBalance": {
+          "amount": 2.20,
+          "currency": "EUR"
+      },
+      "creditBalanceTransactions": [
+          {
+              "id": "3a05321e-8003-dfc6-f2bd-e100a5a55c7c",
+              "creationTime": "2022-07-22T11:49:42",
+              "creatorId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+              "sequenceNumber": 1,
+              "externalId": "1:Petovskys-iMac:1:",
+              "amount": {
+                  "amount": 2.20,
+                  "currency": "EUR"
+              },
+              "type": "Correction",
+              "endingCreditBalance": {
+                  "amount": 2.20,
+                  "currency": "EUR"
+              },
+              "meta": {
+                  "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-8003-dfc6-f2bd-e100a5a55c7c"
+              },
+              "note": "Transakcia #498503871",
+              "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
+          }
+      ],
+      "cards": [
+          {
+              "id": "3a05321e-7ffd-9089-f57b-fa48f6c08d65",
+              "creationTime": "2022-07-22T11:49:42Z",
+              "creatorId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+              "lastModificationTime": "2022-07-22T13:09:48Z",
+              "lastModifierId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+              "tenantId": "3a053799-6da6-6458-c289-8dcfd9de42cc",
+              "externalId": "1:Petovskys-iMac:0179000000015140:",
+              "concurrencyStamp": "3536485aadb0472f8a27127ea9bb2f66",
+              "isActive": true,
+              "isVirtual": true,
+              "serialNumber": "0179000000015140",
+              "processor": "G",
+              "status": "Valid",
+              "statusTime": "2022-07-22T11:49:53Z",
+              "activationTime": "2022-06-01T00:00:00Z",
+              "expirationTime": "2022-12-01T00:00:00Z",
+              "meta": {
+                  "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-7ffd-9089-f57b-fa48f6c08d65"
+              },
+              "note": "Karta #1",
+              "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
+          },
+          {
+              "id": "3a05321e-8069-042c-ca14-4704f4b97d28",
+              "creationTime": "2022-07-22T11:49:42Z",
+              "creatorId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+              "lastModificationTime": "2022-07-22T13:09:48Z",
+              "lastModifierId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+              "tenantId": "3a053799-6da6-6458-c289-8dcfd9de42cc",
+              "externalId": "1:Petovskys-iMac:0179000000017039:",
+              "concurrencyStamp": "b8bbbb3ef3ea4c20a5600827637e251d",
+              "isActive": true,
+              "isVirtual": false,
+              "serialNumber": "0179000000017039",
+              "processor": "P",
+              "status": "Valid",
+              "statusTime": "2022-07-22T11:49:59Z",
+              "activationTime": "2022-06-01T00:00:00Z",
+              "expirationTime": "2022-12-01T00:00:00Z",
+              "meta": {
+                  "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-8069-042c-ca14-4704f4b97d28"
+              },
+              "note": "Karta #2",
+              "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
+          }
+      ],
+      "creditRate": 0.350000,
+      "discountRate": 22.50,
+      "meta": {
+          "Portos.Features:NineDigit.EKasaCloud:Local:Version": "i:6"
+      }
+    }';
+
+    $customer = $serializer->deserialize($json, $type);
+
+    $this->assertInstanceOf(Customer::class, $customer);
+    $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $customer->id);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 42), $customer->creationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $customer->creatorId);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 13, 9, 48), $customer->lastModificationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $customer->lastModifierId);
+    $this->assertEquals("ad6c3d54d87044dbb55ccc77a9791b5a", $customer->concurrencyStamp);
+    $this->assertEquals("3a053799-6da6-6458-c289-8dcfd9de42cc", $customer->tenantId);
+    $this->assertEquals(true, $customer->isActive);
+    $this->assertEquals("Valid", $customer->status);
+    $this->assertEquals("1:Petovskys-iMac:62d5542c9c104378d6db9a79:", $customer->externalId);
+    $this->assertEquals(true, $customer->isCompany);
+
+    $this->assertInstanceOf(CustomerCompanyDto::class, $customer->company);
+    $this->assertEquals("Company, s.r.o.", $customer->company->name);
+    $this->assertEquals("1234567890", $customer->company->crn);
+    $this->assertEquals("SK9876543210", $customer->company->vatId);
+    $this->assertEquals("9876543210", $customer->company->taxId);
+
+    $this->assertInstanceOf(CreditDto::class, $customer->creditBalance);
+    $this->assertEquals(2.20, $customer->creditBalance->amount);
+    $this->assertEquals("EUR", $customer->creditBalance->currency);
+
+    $this->assertIsArray($customer->creditBalanceTransactions);
+    $this->assertCount(1, $customer->creditBalanceTransactions);
+
+    // Transaction
+    $transaction = $customer->creditBalanceTransactions[0];
+    $this->assertEquals("3a05321e-8003-dfc6-f2bd-e100a5a55c7c", $transaction->id);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 42), $transaction->creationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $transaction->creatorId);
+    $this->assertEquals("1:Petovskys-iMac:1:", $transaction->externalId);
+
+    $this->assertInstanceOf(CreditDto::class, $transaction->amount);
+    $this->assertEquals(2.20, $transaction->amount->amount);
+    $this->assertEquals("EUR", $transaction->amount->currency);
+
+    $this->assertEquals("Correction", $transaction->type);
+
+    $this->assertInstanceOf(CreditDto::class, $transaction->endingCreditBalance);
+    $this->assertEquals(2.20, $transaction->endingCreditBalance->amount);
+    $this->assertEquals("EUR", $transaction->endingCreditBalance->currency);
+
+    $this->assertIsArray($transaction->meta);
+    $this->assertCount(1, $transaction->meta);
+    
+    $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $transaction->meta);
+    $this->assertEquals("s:3a05321e-8003-dfc6-f2bd-e100a5a55c7c", $transaction->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
+
+    $this->assertEquals("Transakcia #498503871", $transaction->note);
+    $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $transaction->customerId);
+
+    $this->assertIsArray($customer->cards);
+    $this->assertCount(2, $customer->cards);
+
+    // Card #1
+    $card1 = $customer->cards[0];
+
+    $this->assertEquals("3a05321e-7ffd-9089-f57b-fa48f6c08d65", $card1->id);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 42), $card1->creationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $card1->creatorId);
+    // $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 13, 9, 48), $card1->lastModificationTime);
+    // $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $card1->lastModifierId);
+    $this->assertEquals("3a053799-6da6-6458-c289-8dcfd9de42cc", $card1->tenantId);
+    $this->assertEquals("1:Petovskys-iMac:0179000000015140:", $card1->externalId);
+    $this->assertEquals("3536485aadb0472f8a27127ea9bb2f66", $card1->concurrencyStamp);
+    $this->assertEquals(true, $card1->isActive);
+    $this->assertEquals(true, $card1->isVirtual);
+    $this->assertEquals("0179000000015140", $card1->serialNumber);
+    $this->assertEquals("G", $card1->processor);
+    $this->assertEquals("Valid", $card1->status);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 53), $card1->statusTime);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 6, 1, 0, 0, 0), $card1->activationTime);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 12, 1, 0, 0, 0), $card1->expirationTime);
+    
+    $this->assertIsArray($card1->meta);
+    $this->assertCount(1, $card1->meta);
+    
+    $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $card1->meta);
+    $this->assertEquals("s:3a05321e-7ffd-9089-f57b-fa48f6c08d65", $card1->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
+    
+    $this->assertEquals("Karta #1", $card1->note);
+    $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $card1->customerId);
+
+    // Card #2
+    $card2 = $customer->cards[1];
+
+    $this->assertEquals("3a05321e-8069-042c-ca14-4704f4b97d28", $card2->id);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 42), $card2->creationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $card2->creatorId);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 13, 9, 48), $card2->lastModificationTime);
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $card2->lastModifierId);
+    $this->assertEquals("3a053799-6da6-6458-c289-8dcfd9de42cc", $card2->tenantId);
+    $this->assertEquals("1:Petovskys-iMac:0179000000017039:", $card2->externalId);
+    $this->assertEquals("b8bbbb3ef3ea4c20a5600827637e251d", $card2->concurrencyStamp);
+    $this->assertEquals(true, $card2->isActive);
+    $this->assertEquals(false, $card2->isVirtual);
+    $this->assertEquals("0179000000017039", $card2->serialNumber);
+    $this->assertEquals("P", $card2->processor);
+    $this->assertEquals("Valid", $card2->status);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 7, 22, 11, 49, 59), $card2->statusTime);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 6, 1, 0, 0, 0), $card2->activationTime);
+    $this->assertEquals(DateTimeHelper::createUtc(2022, 12, 1, 0, 0, 0), $card2->expirationTime);
+    
+    $this->assertIsArray($card2->meta);
+    $this->assertCount(1, $card2->meta);
+    
+    $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $card2->meta);
+    $this->assertEquals("s:3a05321e-8069-042c-ca14-4704f4b97d28", $card2->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
+    
+    $this->assertEquals("Karta #2", $card2->note);
+    $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $card2->customerId);
+
+    $this->assertEquals(0.350000, $customer->creditRate);
+    $this->assertEquals(22.50, $customer->discountRate);
+
+    $this->assertIsArray($customer->meta);
+    $this->assertCount(1, $customer->meta);
+    
+    $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Local:Version", $customer->meta);
+    $this->assertEquals("i:6", $customer->meta["Portos.Features:NineDigit.EKasaCloud:Local:Version"]);
   }
 
   public function testValidationProblemDetailsDeserialization() {
@@ -289,14 +522,6 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertEquals("/api/v1/registrations/receipts", $details->instance);
     $this->assertEquals(ApiErrorCode::TENANT_NOT_FOUND, $details->code);
     $this->assertEquals("0HMCTVDF5NB0B:00000002", $details->traceId);
-  }
-
-  private function createUtcDateTime(int $year, int $month, int $day, int $hour, int $minute, int $second = 0, int $microsecond = 0): \DateTime {
-    $date = new \DateTime("now", new \DateTimeZone("UTC"));
-    $date = $date->setDate($year, $month, $day);
-    $date = $date->setTime($hour, $minute, $second, $microsecond);
-
-    return $date;
   }
 }
 

@@ -2,17 +2,10 @@
 
 namespace NineDigit\eKasa\Cloud\Client;
 
+use NineDigit\eKasa\Cloud\Client\Serialization\SerializerInterface;
+use NineDigit\eKasa\Cloud\Client\Authentication\ApiRequestMessageSignerInterface;
+
 final class ApiClientOptions {
-  /**
-   * @deprecated Bude odstránená v nasledujúcej verzií. Náhradou je CloudEnvironment
-   */
-  public const DEFAULT_URL = CloudEnvironment::PRODUCTION;
-
-  /**
-   * @deprecated Bude odstránená v nasledujúcej verzií
-   */
-  public const DEFAULT_TENANT_KEY = "__tenant";
-
   /**
    * Url adresa e-Kasa Cloud servera
    * @example "https://ekasa-cloud.ninedigit.sk/api"
@@ -39,24 +32,26 @@ final class ApiClientOptions {
   public ?string $proxyUrl;
 
   /**
-   * Kĺúč, pod ktorým bude vyhľadaný identifikátor
-   * skupiny koncových zariadení
-   * @example __tenant
-   * @deprecated Bude odstránená v nasledujúcej verzií
+   * Iba na účely testovania
    */
-  public string $tenantKey;
+  public ?ApiRequestMessageSignerInterface $requestMessageSigner = null;
+
+  /**
+   * Iba na účely testovania
+   */
+  public ?SerializerInterface $serializer = null;
 
   public function __construct(
     string $publicKey,
     string $privateKey,
-    ?string $tenantId = null
+    ?string $tenantId = null,
+    ?string $url = CloudEnvironment::PRODUCTION
   ) {
     $this->publicKey = $publicKey;
     $this->privateKey = $privateKey;
     $this->tenantId = $tenantId;
     $this->proxyUrl = null;
-    $this->url = ApiClientOptions::DEFAULT_URL;
-    $this->tenantKey = ApiClientOptions::DEFAULT_TENANT_KEY;
+    $this->url = $url;
   }
 }
 
