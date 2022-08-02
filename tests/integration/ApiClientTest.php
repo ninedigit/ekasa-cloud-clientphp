@@ -33,11 +33,8 @@ final class ApiClientIntegrationTest extends TestCase {
         $this->assertInstanceOf(\DateTime::class, $result->requestTime);
         $this->assertIsArray($result->items);
 
-        if (count($result->items) > 0) {
-            foreach ($result->items as $item) {
-                $this->assertInstanceOf(CustomerDto::class, $item);
-            }
-        }
+        $this->assertCount(1, $result->items);
+        $this->assertInstanceOf(CustomerDto::class, $result->items[0]);
     }
 
     public function testGetCustomer() {
