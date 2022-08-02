@@ -18,7 +18,11 @@ Pre vykonanie integračných testov je nutné vytvoriť súbor `ApiClientOptions
 ```
 
 Testy je možné spustiť príkazom
-`./vendor/bin/phpunit --verbose tests`. 
+`./vendor/bin/phpunit --verbose tests`.
+
+## Overenie kompatibility PHP
+
+/vendor/bin/phpcs --standard=PHPCompatibility --extensions=php --runtime-set testVersion 7.4- ./src
 
 # Inštalácia
 
