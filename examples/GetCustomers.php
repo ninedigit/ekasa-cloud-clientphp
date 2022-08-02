@@ -23,9 +23,6 @@ $tenantId = "tenant_id";
 $clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId, CloudEnvironment::PRODUCTION);
 $client = new ApiClient($clientOptions);
 
-// Kód on-line registračnej pokladne (ORP kód), ktorá požiadavku spracuje
-$cashRegisterCode = "88812345678900001";
-
 // Kritéria pre vyhľadávané zákaznícke účty
 $customerFilter = (new CustomerFilterDto())
     ->setIds(array("3a0537ea-cfb2-2b4b-d521-02db003b276c"))
@@ -35,15 +32,15 @@ $customerFilter = (new CustomerFilterDto())
     ->setCardSerialNumbers(array("10000037"));
 
 // Metóda pre získanie zoznamu zákaznícky účtov podľa zvoleného filtra
-$getCustomerResult = $client->getCustomers($query);
+$getCustomerResult = $client->getCustomers($customerFilter);
 
 // Zoznam zákazníckych účtov
 $customers = $getCustomerResult->items;
 
 /*
  * Dátum a čas vykonaného dopytu. Táto hodnota môže byť použitá v ďalšej požiadavke
- * nastavením $customerFilter->setModifiedAfter($requestTime) na získanie zákazníckych
- * profilov vytvorených alebo upravených od posledného dopytu.
+ * nastavením $customerFilter->setModifiedAfter($requestTime) na získanie iba tých
+ * zákazníckych profilov, ktoré boli vytvorené alebo upravené od predošlého dopytu.
  */
 $requestTime = $getCustomerResult->requestTime;
 

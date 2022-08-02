@@ -10,7 +10,7 @@ a dodržiava [sémantické verzionovanie](https://semver.org/spec/v2.0.0.html).
 ### Pridané
 
 - Metódy do triedy `ApiClient` na získanie zákazníkov
-- Pridané vlastnosti `serialzer` a `requestMessageSigner` pre lepšiu testovateľnosť triedy `ApiClient`
+- Pridané vlastnosti `serializer` a `requestMessageSigner` pre lepšiu testovateľnosť triedy `ApiClient`
 - Pridaná metóda `isSuccessStatusCode` a `ensureSuccessStatusCode` do triedy `ApiResponseMessage` na overenie/zabezpečenie kladnej odpovede zo servera
 - Pridaný parameter `url` do `ApiClientOptions`
 - Testy triedy `ApiClient`

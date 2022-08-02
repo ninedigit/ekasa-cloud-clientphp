@@ -22,10 +22,7 @@ $tenantId = "tenant_id";
 $clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId, CloudEnvironment::PRODUCTION);
 $client = new ApiClient($clientOptions);
 
-// Kód on-line registračnej pokladne (ORP kód), ktorá požiadavku spracuje
-$cashRegisterCode = "88812345678900001";
-
-// Unikátny identifikátor zákanzníka
+// Unikátny identifikátor zákazníka
 $customerId = "3a0537ea-cfb2-2b4b-d521-02db003b276c";
 
 /*
