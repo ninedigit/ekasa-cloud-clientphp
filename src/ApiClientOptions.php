@@ -45,14 +45,61 @@ final class ApiClientOptions {
     string $publicKey,
     string $privateKey,
     ?string $tenantId = null,
-    ?string $url = CloudEnvironment::PRODUCTION
+    ?string $url = CloudEnvironment::PRODUCTION,
+    ?string $proxyUrl = null
   ) {
     $this->publicKey = $publicKey;
     $this->privateKey = $privateKey;
     $this->tenantId = $tenantId;
-    $this->proxyUrl = null;
+    $this->proxyUrl = $proxyUrl;
     $this->url = $url;
   }
+
+  public static function load(string $filename): ApiClientOptions {
+    $contents = file_get_contents($filename);
+    $data = json_decode($contents, associative: true, flags: JSON_THROW_ON_ERROR);
+
+    $publicKey = $data['publicKey'];
+    $privateKey = $data['privateKey'];
+    
+    $tenantId = null;
+    $url = CloudEnvironment::PRODUCTION;
+    $proxyUrl = null;
+
+    if (array_key_exists('tenantId', $data)) {
+      $tenantId = $data['tenantId'];
+    }
+
+    if (array_key_exists('url', $data)) {
+      $url = $data['url'];
+    }
+
+    if (array_key_exists('proxyUrl', $data)) {
+      $proxyUrl = $data['proxyUrl'];
+    }
+
+    $options = new ApiClientOptions($publicKey, $privateKey, $tenantId, $url, $proxyUrl);
+    return $options;
+  }
+
+  // public function save(string $filename): void {
+  //   $data = array(
+  //     'publicKey' => $this->publicKey,
+  //     'privateKey' => $this->privateKey,
+  //     'url' => $this->url
+  //   );
+
+  //   if ($this->tenantId !== null) {
+  //     $data['tenantId'] = $this->tenantId;
+  //   }
+
+  //   if ($this->proxyUrl !== null) {
+  //     $data['proxyUrl'] = $this->proxyUrl;
+  //   }
+
+  //   $json = json_encode($data, flags: JSON_THROW_ON_ERROR);
+  //   file_put_contents($filename, $json);
+  // }
 }
 
 ?>

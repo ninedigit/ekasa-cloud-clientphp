@@ -5,7 +5,20 @@ HTTP klient pre e-Kasa cloudové riešenie spoločnosti [Nine Digit, s.r.o.](htt
 
 # Testovanie
 
-`./vendor/bin/phpunit --verbose tests`
+Pre vykonanie integračných testov je nutné vytvoriť súbor `ApiClientOptions.json` v `tests\integration` vo formáte **JSON** so štruktúrou zhodnou s triedou `ApiClientOptions` a teda:
+
+```json
+{
+    "publicKey": "PUBLIC_KEY",
+    "privateKey": "PRIVATE_KEY",
+    "tenantId": "TENANT_ID",
+    "url": "https://ekasa-cloud.ninedigit.sk/api",
+    "proxyUrl": null
+}
+```
+
+Testy je možné spustiť príkazom
+`./vendor/bin/phpunit --verbose tests`. 
 
 # Inštalácia
 
