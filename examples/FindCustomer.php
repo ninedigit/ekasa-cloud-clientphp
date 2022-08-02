@@ -5,6 +5,7 @@ namespace NineDigit\eKasa\Cloud\Client\Examples;
 use \Error;
 use NineDigit\eKasa\Cloud\Client\ApiClient;
 use NineDigit\eKasa\Cloud\Client\ApiClientOptions;
+use NineDigit\eKasa\Cloud\Client\CloudEnvironment;
 
 require '../vendor/autoload.php';
 
@@ -23,17 +24,15 @@ $client = new ApiClient($clientOptions);
 
 // Kód on-line registračnej pokladne (ORP kód), ktorá požiadavku spracuje
 $cashRegisterCode = "88812345678900001";
+
+// Unikátny identifikátor zákanzníka
+$customerId = "3a0537ea-cfb2-2b4b-d521-02db003b276c";
+
 /*
- * Identifikátor požiadavky, priradený nadradenou aplikáciou.
- * Spolu s ORP kódom tvoria unikátny identifikátor požidavky naprieč systémom.
+ * Metóda pre získanie zákazníckeho účtu.
+ * Ak sa zákazník nenašiel, hodnota bude null,
+ * inak CustomerDto.
  */
-$externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
-
-// Zaslanie požidavky a obdržanie výsledku
-$result = $client->cancelReceipt($cashRegisterCode, $externalId);
-
-if ($result->isSuccessful) {
-  // Požiadavka bola úspešne zamietnutá.
-}
+$customer = $client->getCustomer($customerId);
 
 ?>

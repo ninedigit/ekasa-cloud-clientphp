@@ -4,6 +4,7 @@ namespace NineDigit\eKasa\Cloud\Client;
 
 use NineDigit\eKasa\Cloud\Client\Authentication\NWS4ApiRequestMessageSigner;
 
+use NineDigit\eKasa\Cloud\Client\Exceptions\ApiException;
 use NineDigit\eKasa\Cloud\Client\Exceptions\ValidationProblemDetailsException;
 use \GuzzleHttp\Client as GuzzleHttpClient;
 use GuzzleHttp\Exception\RequestException;
@@ -90,5 +91,16 @@ final class ApiClient {
     $result = $this->httpClient->receive($apiRequest, type: CustomerDto::class, sign: true);
 
     return $result;
+  }
+
+  public function findCustomer(string $id): ?CustomerDto {
+    try {
+      return $this->getCustomer($id);
+    } catch (ApiException $ex) {
+      if ($ex->statusCode == 404) {
+        return null;
+      }
+      throw $ex;
+    }
   }
 }

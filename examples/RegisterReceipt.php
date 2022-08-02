@@ -31,7 +31,7 @@ $privateKey = "private_key";
 $tenantId = "tenant_id";
 
 // Inštanciácia API klienta
-$clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId);
+$clientOptions = new ApiClientOptions($publicKey, $privateKey, $tenantId, CloudEnvironment::PRODUCTION);
 $client = new ApiClient($clientOptions);
 
 // Kód on-line registračnej pokladne (ORP kód), ktorá požiadavku spracuje
