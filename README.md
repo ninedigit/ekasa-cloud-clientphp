@@ -1,7 +1,9 @@
 
 # e-Kasa Cloud Client PHP
 
-HTTP klient v jazyku PHP pre [e-Kasa cloudové riešenie](https://github.com/ninedigit/ekasa-cloud) spoločnosti [Nine Digit, s.r.o.](https://ekasa.ninedigit.sk/)
+HTTP klient v jazyku PHP pre [e-Kasa cloudové riešenie](https://github.com/ninedigit/ekasa-cloud) spoločnosti [Nine Digit, s.r.o.](https://ekasa.ninedigit.sk/).
+
+Knižnica je kompatibilná s PHP verzie 7.4 a vyššie.
 
 # Testovanie
 
