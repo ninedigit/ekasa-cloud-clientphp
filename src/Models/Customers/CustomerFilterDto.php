@@ -134,6 +134,10 @@ final class CustomerFilterDto {
             $params["cardId"] = $this->cardId;
         }
 
+        if (is_array($this->cardSerialNumbers)) {
+            $params["cardSerialNumbers"] = $this->cardSerialNumbers;
+        }
+
         if (count($params) > 0) {
             $result = http_build_query($params);
             $result = preg_replace('/%5B[0-9]?%5D/simU', '', $result);

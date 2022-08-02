@@ -34,7 +34,7 @@ final class ApiClientTest extends TestCase {
             receiveCallback: function ($r, $t, $s) {
                 $this->assertInstanceOf(ApiRequest::class, $r);
                 $this->assertEquals(HttpMethod::GET, $r->method);
-                $this->assertEquals("/v1/customers?ids=%231&ids=%232&ids=%233&externalId=%234&modifiedAfter=2021-07-09T12%3A42%3A48.540872Z&isActive=true&cardId=%235", $r->url);
+                $this->assertEquals("/v1/customers?ids=%231&ids=%232&ids=%233&externalId=%234&modifiedAfter=2021-07-09T12%3A42%3A48.540872Z&isActive=true&cardId=%235&cardSerialNumbers=%236&cardSerialNumbers=%237&cardSerialNumbers=%238", $r->url);
                 $this->assertIsArray($r->headers);
                 $this->assertCount(0, $r->headers);
                 $this->assertNull($r->payload);
