@@ -1,7 +1,7 @@
 {
     "name": "ninedigit/ekasa-cloud-clientphp",
     "type": "library",
-    "version": "0.9.10",
+    "version": "0.9.11",
     "description": "API client for eKasa Cloud API",
     "homepage": "https://bitbucket.org/9digit/ekasa-cloud-phpapiclient",
     "keywords": ["ekasa", "cloud", "api", "rest", "http", "client"],

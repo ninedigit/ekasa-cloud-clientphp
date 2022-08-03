@@ -57,7 +57,7 @@ final class ApiClientOptions {
 
   public static function load(string $filename): ApiClientOptions {
     $contents = file_get_contents($filename);
-    $data = json_decode($contents, associative: true, flags: JSON_THROW_ON_ERROR);
+    $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
 
     $publicKey = $data['publicKey'];
     $privateKey = $data['privateKey'];
@@ -97,7 +97,7 @@ final class ApiClientOptions {
   //     $data['proxyUrl'] = $this->proxyUrl;
   //   }
 
-  //   $json = json_encode($data, flags: JSON_THROW_ON_ERROR);
+  //   $json = json_encode($data, JSON_THROW_ON_ERROR);
   //   file_put_contents($filename, $json);
   // }
 }

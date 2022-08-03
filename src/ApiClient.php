@@ -50,7 +50,7 @@ final class ApiClient {
       ->withPayload($receipt)
       ->build();
     
-    $result = $this->httpClient->receive($apiRequest, type: ReceiptRegistrationDto::class, sign: true);
+    $result = $this->httpClient->receive($apiRequest, ReceiptRegistrationDto::class, true);
 
     return $result;
   }
@@ -64,7 +64,7 @@ final class ApiClient {
   public function cancelReceipt(string $cashRegisterCode, string $externalId): ReceiptRegistrationStateChangeResultDto {
     $url = "/v1/registrations/receipts/cancel?cashRegisterCode=${cashRegisterCode}&externalId=${externalId}";
     $apiRequest = ApiRequestBuilder::createPost($url)->build();
-    $result = $this->httpClient->receive($apiRequest, type: ReceiptRegistrationStateChangeResultDto::class, sign: true);
+    $result = $this->httpClient->receive($apiRequest, ReceiptRegistrationStateChangeResultDto::class, true);
 
     return $result;
   }
@@ -80,7 +80,7 @@ final class ApiClient {
     }
 
     $apiRequest = ApiRequestBuilder::createGet($url)->build();
-    $result = $this->httpClient->receive($apiRequest, type: GetCustomerListResultDto::class, sign: true);
+    $result = $this->httpClient->receive($apiRequest, GetCustomerListResultDto::class, true);
 
     return $result;
   }
@@ -88,7 +88,7 @@ final class ApiClient {
   public function getCustomer(string $id): CustomerDto {
     $url = "/v1/customers/".urlencode($id);
     $apiRequest = ApiRequestBuilder::createGet($url)->build();
-    $result = $this->httpClient->receive($apiRequest, type: CustomerDto::class, sign: true);
+    $result = $this->httpClient->receive($apiRequest, CustomerDto::class, true);
 
     return $result;
   }
