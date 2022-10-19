@@ -1,7 +1,7 @@
 {
     "name": "ninedigit/ekasa-cloud-clientphp",
     "type": "library",
-    "version": "0.9.11",
+    "version": "0.9.12",
     "description": "API client for eKasa Cloud API",
     "homepage": "https://bitbucket.org/9digit/ekasa-cloud-phpapiclient",
     "keywords": ["ekasa", "cloud", "api", "rest", "http", "client"],
@@ -29,7 +29,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "symfony/serializer": "^5.3",
         "symfony/property-access": "^5.3",
-        "squizlabs/php_codesniffer": "3.*"
+        "squizlabs/php_codesniffer": "3.*",
+        "phpdocumentor/reflection-docblock": "^5.3"
     },
     "require-dev": {
         "phpcompatibility/php-compatibility": "*",
@@ -38,7 +39,10 @@
     },
     "prefer-stable" : true,
     "config": {
-        "vendor-dir": "vendor"
+        "vendor-dir": "vendor",
+        "platform": {
+            "php": "7.4.0"
+        }
     },
     "scripts": {
         "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",

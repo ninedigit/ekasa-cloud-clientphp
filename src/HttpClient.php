@@ -52,7 +52,7 @@ final class HttpClient implements HttpClientInterface {
     }
   }
 
-  public function receive(ApiRequest $request, $type, $sign = false): mixed {
+  public function receive(ApiRequest $request, $type, $sign = false) {
     $requestMessage = $this->createRequestMessage($request, $sign);
     $responseMessage = $this->sendRequestMessage($requestMessage);
     $result = $this->deserializeResponseMessage($responseMessage, $type);
@@ -121,7 +121,7 @@ final class HttpClient implements HttpClientInterface {
     $this->requestMessageSigner->sign($request);
   }
 
-  private function deserializeResponseMessage(ApiResponseMessage $response, $classType): mixed {
+  private function deserializeResponseMessage(ApiResponseMessage $response, $classType) {
     if ($response->isSuccessStatusCode()) {
       return $this->serializer->deserialize($response->body, $classType);
     } else {

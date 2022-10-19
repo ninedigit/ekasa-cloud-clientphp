@@ -9,8 +9,8 @@ final class ApiRequestHeadersBuilder {
     $this->headers = $defaultHeaders;
   }
 
-  public function set(array $defaultHeaders): ApiRequestHeadersBuilder {
-    foreach ($defaultHeaders as $key => $value) {
+  public function set(array $headers): ApiRequestHeadersBuilder {
+    foreach ($headers as $key => $value) {
       $this->headers[$key] = $value;
     }
     return $this;
@@ -19,6 +19,10 @@ final class ApiRequestHeadersBuilder {
   public function accept(string $value): ApiRequestHeadersBuilder {
     $this->headers['Accept'] = $value;
     return $this;
+  }
+
+  public function clear(): void {
+    array_splice($this->headers, 0);
   }
 
   public function build(): array {

@@ -24,13 +24,13 @@ final class ApiRequestBuilder {
 
   /**
    * Metóda na nastavenie hlavičiek
-   * @param mixed $headersOrCallable Pole hlavičiek alebo vyvolateľná funkcia preberajúca ApiRequestHeadersBuilder.
+   * @param $headersOrCallable Asociatívne pole hlavičiek alebo vyvolateľná funkcia preberajúca ApiRequestHeadersBuilder.
    */
-  function withHeaders(mixed $headersOrCallable): ApiRequestBuilder {
+  function withHeaders($headersOrCallable): ApiRequestBuilder {
     if (is_callable($headersOrCallable)) {
       $headersOrCallable($this->headersBuilder);
-    } else if (is_array($headers)) {
-      $this->headersBuilder->set($defaultHeaders);
+    } else if (is_array($headersOrCallable)) {
+      $this->headersBuilder->set($headersOrCallable);
     } else {
       throw new \InvalidArgumentException("Expecting array or callable as an argument.");
     }
@@ -44,25 +44,25 @@ final class ApiRequestBuilder {
     return $apiRequest;
   }
 
-  public static function createGet(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
-    return new ApiRequestBuilder(HttpMethod::GET, $url, $defaultHeaders);
+  public static function createGet(string $url, array $headers = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::GET, $url, $headers);
   }
 
-  public static function createPost(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
-    return new ApiRequestBuilder(HttpMethod::POST, $url, $defaultHeaders);
+  public static function createPost(string $url, array $headers = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::POST, $url, $headers);
   }
 
-  public static function createPut(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
-    return new ApiRequestBuilder(HttpMethod::PUT, $url, $defaultHeaders);
+  public static function createPut(string $url, array $headers = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::PUT, $url, $headers);
   }
 
-  public static function createDelete(string $url, array $defaultHeaders = array()): ApiRequestBuilder {
-    return new ApiRequestBuilder(HttpMethod::DELETE, $url, $defaultHeaders);
+  public static function createDelete(string $url, array $headers = array()): ApiRequestBuilder {
+    return new ApiRequestBuilder(HttpMethod::DELETE, $url, $headers);
   }
 
   public static function fromApiRequest(ApiRequest $apiRequest, array $defaultHeaders = array()): ApiRequestBuilder {
-    $headers = array_merge($defaultHeaders, $apiRequest->headers);
-    $builder = new ApiRequestBuilder($apiRequest->method, $apiRequest->url, $headers);
+    $builder = new ApiRequestBuilder($apiRequest->method, $apiRequest->url, $defaultHeaders);
+    $this->headersBuilder->set($apiRequest->headers);
     $builder->withPayload($apiRequest->payload);
 
     return $builder;

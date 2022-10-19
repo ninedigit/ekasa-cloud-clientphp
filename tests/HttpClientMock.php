@@ -19,9 +19,9 @@ final class HttpClientMock implements HttpClientInterface {
         }
     }
 
-    public function receive(ApiRequest $request, $type, $sign = false): mixed {
+    public function receive(ApiRequest $request, $type, $sign = false) {
         if (is_callable($this->receiveCallback)) {
-            return ($this->receiveCallback)($request, $type, $sign);
+            return call_user_func($this->receiveCallback, $request, $type, $sign);
         }
     }
 }

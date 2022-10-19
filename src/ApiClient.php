@@ -24,11 +24,11 @@ final class ApiClient {
   private HttpClientInterface $httpClient;
 
   /**
-   * @param mixed $httpClientOrOptions akceptuje ApiClientOptions alebo HttpClientInterface.
+   * @param $httpClientOrOptions akceptuje ApiClientOptions alebo HttpClientInterface.
    * Preťaženie s HttpClientInterface sa využíva iba na testovacie účely. Využívajte preťaženie
    * akceptujúce ApiClientOptions.
    */
-  public function __construct(mixed $optionsOrClient) {
+  public function __construct($optionsOrClient) {
     if ($optionsOrClient instanceof ApiClientOptions) {
       $this->httpClient = new HttpClient($optionsOrClient);
     } else if (is_subclass_of($optionsOrClient, HttpClientInterface::class)) {
@@ -46,7 +46,7 @@ final class ApiClient {
    * @throws ProblemDetailsException
    */
   public function registerReceipt(CreateReceiptRegistrationDto $receipt): ReceiptRegistrationDto {
-    $apiRequest = ApiRequestBuilder::createPost("/v1/registrations/receipts", $this->defaultHttpHeaders)
+    $apiRequest = ApiRequestBuilder::createPost("/v1/registrations/receipts")
       ->withPayload($receipt)
       ->build();
     
