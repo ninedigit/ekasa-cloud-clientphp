@@ -1,0 +1,30 @@
+<?php
+
+namespace NineDigit\eKasa\Cloud\Client\Serialization;
+
+use PHPUnit\Framework\TestCase;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PosReceiptPrinterOptions;
+
+final class SymfonyJsonSerializerTest extends TestCase {
+    public function testSerializeForEmptyPosReceiptPrinterOptions() {
+        $serializer = new SymfonyJsonSerializer();
+        $opts = new PosReceiptPrinterOptions();
+
+        $json = $serializer->serialize($opts);
+
+        $this->assertEquals("{}", $json);
+    }
+
+    public function testSerializeForNonEmptyPosReceiptPrinterOptions() {
+        $serializer = new SymfonyJsonSerializer();
+        $opts = new PosReceiptPrinterOptions();
+        $opts->openDrawer = true;
+
+        $json = $serializer->serialize($opts);
+
+        var_dump($json);
+        $this->assertEquals("{\"openDrawer\":true}", $json);
+    }
+}
+
+?>

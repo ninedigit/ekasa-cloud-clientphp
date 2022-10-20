@@ -53,6 +53,7 @@ $externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
   $receiptPrinter = new PosReceiptPrinterDto($posPrinterOptions);
 
   // 2. Tlačiareň vyhotovujúca PDF súbory
+  $pdfPrinterOptions = new PdfReceiptPrinterOptions();
   $receiptPrinter = new PdfReceiptPrinterDto($pdfPrinterOptions);
 
   // 3. Tlačiareň vyhotovujúca e-maily

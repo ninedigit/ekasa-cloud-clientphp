@@ -27,6 +27,7 @@ final class SymfonyJsonSerializer implements SerializerInterface {
     $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
     $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);
     $normalizers = [
+        // TODO: Add ProblemNormalizer (https://symfony.com/doc/current/components/serializer.html#built-in-normalizers)
         new ArrayDenormalizer(),
         new CloudDateTimeNormalizer(),
         new ObjectNormalizer($classMetadataFactory, null, null, $extractor, $discriminator)
@@ -37,7 +38,10 @@ final class SymfonyJsonSerializer implements SerializerInterface {
   }
 
   function serialize($data): string {
-    return $this->serializer->serialize($data, 'json');
+    return $this->serializer->serialize($data, 'json', [
+      ObjectNormalizer::SKIP_NULL_VALUES => true,
+      ObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true
+    ]);
   }
 
   function deserialize($data, $type) {

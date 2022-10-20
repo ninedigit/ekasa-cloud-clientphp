@@ -17,7 +17,6 @@ use NineDigit\eKasa\Cloud\Client\Models\Customers\GetCustomerListResultDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationDto;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationStateChangeResultDto;
-use NineDigit\eKasa\Cloud\Client\Serialization\SymfonyJsonSerializer;
 
 
 final class ApiClient {

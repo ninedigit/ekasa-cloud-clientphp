@@ -3,11 +3,28 @@
 namespace NineDigit\eKasa\Cloud\Client;
 
 use PHPUnit\Framework\TestCase;
-use NineDigit\eKasa\Cloud\Client\ApiClientOptions;
 use NineDigit\eKasa\Cloud\Client\Exceptions\ApiException;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerDto;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerFilterDto;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\GetCustomerListResultDto;
+
+use \Error;
+use NineDigit\eKasa\Cloud\Client\ApiClient;
+use NineDigit\eKasa\Cloud\Client\ApiClientOptions;
+use NineDigit\eKasa\Cloud\Client\Models\QuantityDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PosReceiptPrinterOptions;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PosReceiptPrinterDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PdfReceiptPrinterOptions;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\PdfReceiptPrinterDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\EmailReceiptPrinterOptions;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\EmailReceiptPrinterDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\CreateReceiptRegistrationDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptItemType;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationItemDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptRegistrationPaymentDto;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptType;
+use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationState;
 
 
 final class ApiClientIntegrationTest extends TestCase {
@@ -82,6 +99,182 @@ final class ApiClientIntegrationTest extends TestCase {
         $customer = $apiClient->findCustomer($customerId);
 
         $this->assertNull($customer);
+    }
+
+    public function testRegisterReceiptUsingPosPrinter() {
+        $apiClientOptions = $this->getProductionDemoAccountOptions();
+        $apiClient = new ApiClient($apiClientOptions);
+
+        $posPrinterOptions = new PosReceiptPrinterOptions();
+        $receiptPrinter = new PosReceiptPrinterDto($posPrinterOptions);
+
+        $cashRegisterCode = "88812345678900001";
+        $externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
+
+        $item = new ReceiptRegistrationItemDto(
+            ReceiptItemType::POSITIVE,
+            "Coca Cola 0.25l",
+            1.29,
+            20.00,
+            new QuantityDto(2, "ks"),
+            2.58
+        );
+
+        $payment = new ReceiptRegistrationPaymentDto(2.58, "Hotovosť");
+
+        $receiptRegistrationRequest = new Receipts\CreateReceiptRegistrationRequestDto(
+            ReceiptType::CASH_REGISTER,
+            $cashRegisterCode,
+            $externalId,
+            [$item],
+            [$payment]
+        );
+
+        $receiptRegistrationRequest->headerText = "www.ninedigit.sk";
+        $receiptRegistrationRequest->footerText = "Ďakujeme za váš nákup.";
+
+        $validityTimeSpan = 1;
+
+        $createReceiptRegistration = new CreateReceiptRegistrationDto(
+            $receiptPrinter, $receiptRegistrationRequest, $validityTimeSpan);
+
+        $receiptRegistration = $apiClient->registerReceipt($createReceiptRegistration);
+
+        $this->assertNotEquals(RegistrationState::FAILED, $receiptRegistration->state);
+    }
+
+    public function testRegisterReceiptUsingPosPrinterWithNonEmptyOptions() {
+        $apiClientOptions = $this->getProductionDemoAccountOptions();
+        $apiClient = new ApiClient($apiClientOptions);
+
+        $posPrinterOptions = new PosReceiptPrinterOptions();
+        $posPrinterOptions->openDrawer = true;
+        $receiptPrinter = new PosReceiptPrinterDto($posPrinterOptions);
+
+        // $receiptPrinter = new PdfReceiptPrinterDto($pdfPrinterOptions);
+
+        // $emailPrinterOptions = new EmailReceiptPrinterOptions("mail@example.com");
+        // $emailPrinterOptions->subject = "Váš elektronický doklad";
+        // $receiptPrinter = new EmailReceiptPrinterDto($emailPrinterOptions);
+
+        $cashRegisterCode = "88812345678900001";
+        $externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
+
+        $item = new ReceiptRegistrationItemDto(
+            ReceiptItemType::POSITIVE,
+            "Coca Cola 0.25l",
+            1.29,
+            20.00,
+            new QuantityDto(2, "ks"),
+            2.58
+        );
+
+        $payment = new ReceiptRegistrationPaymentDto(2.58, "Hotovosť");
+
+        $receiptRegistrationRequest = new Receipts\CreateReceiptRegistrationRequestDto(
+            ReceiptType::CASH_REGISTER,
+            $cashRegisterCode,
+            $externalId,
+            [$item],
+            [$payment]
+        );
+
+        $receiptRegistrationRequest->headerText = "www.ninedigit.sk";
+        $receiptRegistrationRequest->footerText = "Ďakujeme za váš nákup.";
+
+        $validityTimeSpan = 1;
+
+        $createReceiptRegistration = new CreateReceiptRegistrationDto(
+            $receiptPrinter, $receiptRegistrationRequest, $validityTimeSpan);
+
+        $receiptRegistration = $apiClient->registerReceipt($createReceiptRegistration);
+
+        $this->assertNotEquals(RegistrationState::FAILED, $receiptRegistration->state);
+    }
+
+    public function testRegisterReceiptUsingEmailPrinter() {
+        $apiClientOptions = $this->getProductionDemoAccountOptions();
+        $apiClient = new ApiClient($apiClientOptions);
+
+        $emailPrinterOptions = new EmailReceiptPrinterOptions("mail@example.com");
+        $emailPrinterOptions->subject = "Váš elektronický doklad";
+        $receiptPrinter = new EmailReceiptPrinterDto($emailPrinterOptions);
+
+        $cashRegisterCode = "88812345678900001";
+        $externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
+
+        $item = new ReceiptRegistrationItemDto(
+            ReceiptItemType::POSITIVE,
+            "Coca Cola 0.25l",
+            1.29,
+            20.00,
+            new QuantityDto(2, "ks"),
+            2.58
+        );
+
+        $payment = new ReceiptRegistrationPaymentDto(2.58, "Hotovosť");
+
+        $receiptRegistrationRequest = new Receipts\CreateReceiptRegistrationRequestDto(
+            ReceiptType::CASH_REGISTER,
+            $cashRegisterCode,
+            $externalId,
+            [$item],
+            [$payment]
+        );
+
+        $receiptRegistrationRequest->headerText = "www.ninedigit.sk";
+        $receiptRegistrationRequest->footerText = "Ďakujeme za váš nákup.";
+
+        $validityTimeSpan = 1;
+
+        $createReceiptRegistration = new CreateReceiptRegistrationDto(
+            $receiptPrinter, $receiptRegistrationRequest, $validityTimeSpan);
+
+        $receiptRegistration = $apiClient->registerReceipt($createReceiptRegistration);
+
+        $this->assertNotEquals(RegistrationState::FAILED, $receiptRegistration->state);
+    }
+
+    public function testRegisterReceiptUsingPdfPrinter() {
+        $apiClientOptions = $this->getProductionDemoAccountOptions();
+        $apiClient = new ApiClient($apiClientOptions);
+
+        $pdfPrinterOptions = new PdfReceiptPrinterOptions();
+        $receiptPrinter = new PdfReceiptPrinterDto($pdfPrinterOptions);
+
+        $cashRegisterCode = "88812345678900001";
+        $externalId = "e52ff4d1-f2ed-4493-9e9a-a73739b1ba23";
+
+        $item = new ReceiptRegistrationItemDto(
+            ReceiptItemType::POSITIVE,
+            "Coca Cola 0.25l",
+            1.29,
+            20.00,
+            new QuantityDto(2, "ks"),
+            2.58
+        );
+
+        $payment = new ReceiptRegistrationPaymentDto(2.58, "Hotovosť");
+
+        $receiptRegistrationRequest = new Receipts\CreateReceiptRegistrationRequestDto(
+            ReceiptType::CASH_REGISTER,
+            $cashRegisterCode,
+            $externalId,
+            [$item],
+            [$payment]
+        );
+
+        $receiptRegistrationRequest->headerText = "www.ninedigit.sk";
+        $receiptRegistrationRequest->footerText = "Ďakujeme za váš nákup.";
+
+        $validityTimeSpan = 1;
+
+        $createReceiptRegistration = new CreateReceiptRegistrationDto(
+            $receiptPrinter, $receiptRegistrationRequest, $validityTimeSpan);
+
+        $receiptRegistration = $apiClient->registerReceipt($createReceiptRegistration);
+
+        $this->assertNotEquals(RegistrationState::FAILED, $receiptRegistration->state);
     }
 }
 
