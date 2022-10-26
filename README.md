@@ -51,8 +51,9 @@ Následne nainštalujte balík príkazom `composer require ninedigit/ekasa-cloud
 
 ## Zaokrúhľovanie
 
-Výsledky všetkých matematických operácií musia byť pred priradením do príslušných premenných zaokrúhlené a to buď na 6 desatinných miest pre jednotkové ceny (napr. vlastnosť `ReceiptRegistrationItemDto.unitPrice`) alebo na dve desatinné miesta pre ostatné ceny prípadne množstvá (napr. vlastnosť `QuantityDto.amount` alebo `ReceiptRegistrationItemDto.price`).
+Výsledky všetkých matematických operácií musia byť pred priradením do príslušných premenných zaokrúhlené a to buď na 6 desatinných miest pre jednotkové ceny (napr. vlastnosť `ReceiptRegistrationItemDto.unitPrice`) alebo na dve desatinné miesta pre ostatné ceny, prípadne množstvá (napr. vlastnosť `QuantityDto.amount` alebo `ReceiptRegistrationItemDto.price`).
 
+## Príklad registrácie požiadavky
 ```php
 // Nastavenia tlače
 $receiptPrinter = new PosReceiptPrinterDto();
