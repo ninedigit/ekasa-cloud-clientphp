@@ -36,6 +36,7 @@ final class HttpClient implements HttpClientInterface {
 
     $this->requestMessageSigner = $options->requestMessageSigner
       ?? new NWS4ApiRequestMessageSigner($options->publicKey, $options->privateKey);
+    
     $this->serializer = $options->serializer ?? new SymfonyJsonSerializer();
 
     $this->defaultHttpHeaders = array();
@@ -66,6 +67,7 @@ final class HttpClient implements HttpClientInterface {
     }
 
     $body = $this->serializer->serialize($request->payload);
+
     $headers = array_merge($this->defaultHttpHeaders, $request->headers);
 
     if (!array_key_exists('Content-Type', $headers) || empty($headers['Content-Type'])) {
