@@ -5,9 +5,22 @@ HTTP klient v jazyku PHP pre [e-Kasa cloudové riešenie](https://github.com/nin
 
 Knižnica je kompatibilná s PHP verzie 7.4 a vyššie.
 
+# Vývoj
+
+## Inštalácia Composer-a
+
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
+
+Inštalácia závislostí knižnice: `php composer.phar install`.
+
 # Testovanie
 
-Pre vykonanie integračných testov je nutné vytvoriť súbor `ApiClientOptions.json` v `tests\integration` vo formáte **JSON** so štruktúrou zhodnou s triedou `ApiClientOptions` a teda:
+Pre vykonanie integračných testov je nutné vytvoriť súbor `settings.json` v `tests\integration` vo formáte **JSON** so štruktúrou zhodnou s triedou `ApiClientOptions` a teda:
 
 ```json
 {
@@ -15,7 +28,8 @@ Pre vykonanie integračných testov je nutné vytvoriť súbor `ApiClientOptions
     "privateKey": "PRIVATE_KEY",
     "tenantId": "TENANT_ID",
     "url": "https://ekasa-cloud.ninedigit.sk/api",
-    "proxyUrl": null
+    "proxyUrl": null,
+    "cashRegisterCode": "ORP_CODE"
 }
 ```
 
@@ -24,7 +38,7 @@ Testy je možné spustiť príkazom
 
 ## Overenie kompatibility PHP
 
-/vendor/bin/phpcs --standard=PHPCompatibility --extensions=php --runtime-set testVersion 7.4- ./src
+`/vendor/bin/phpcs --standard=PHPCompatibility --extensions=php --runtime-set testVersion 7.4- ./src`
 
 # Inštalácia
 

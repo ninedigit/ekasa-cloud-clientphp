@@ -63,4 +63,4 @@ composer.lock
 # Local History for Visual Studio Code
 .history/
 
-/tests/integration/ApiClientOptions.json
+/tests/integration/settings.json

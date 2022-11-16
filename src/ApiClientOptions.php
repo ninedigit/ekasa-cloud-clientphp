@@ -55,9 +55,17 @@ final class ApiClientOptions {
     $this->url = $url;
   }
 
-  public static function load(string $filename): ApiClientOptions {
-    $contents = file_get_contents($filename);
-    $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+  public static function load($filenameOrData): ApiClientOptions {
+    $data = array();
+
+    if (is_string($filenameOrData)) {
+      $contents = file_get_contents($filenameOrData);
+      $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+    } else if (is_array($filenameOrData)) {
+      $data = $filenameOrData;
+    } else {
+      throw new \InvalidArgumentException("Expecting string or array as an argument.");
+    }
 
     $publicKey = $data['publicKey'];
     $privateKey = $data['privateKey'];
