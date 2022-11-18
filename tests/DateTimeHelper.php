@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests;
 
 final class DateTimeHelper {
     public static function createUtc(int $year, int $month, int $day, int $hour, int $minute, int $second = 0, int $microsecond = 0): \DateTime {

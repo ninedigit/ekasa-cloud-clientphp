@@ -1,6 +1,8 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests\Integration;
+
+use NineDigit\eKasa\Cloud\Client\Tests\Integration\ApiClientIntegrationTestOptions;
 
 use PHPUnit\Framework\TestCase;
 use NineDigit\eKasa\Cloud\Client\Exceptions\ApiException;
@@ -27,37 +29,34 @@ use NineDigit\eKasa\Cloud\Client\Models\Registrations\Receipts\ReceiptType;
 use NineDigit\eKasa\Cloud\Client\Models\Registrations\RegistrationState;
 
 
-final class IntegrationTestsOptions {
-    public ApiClientOptions $apiClientOptions;
-    public string $cashRegisterCode;
-    
-    static function load(string $fileName): IntegrationTestsOptions {
-        $contents = file_get_contents($fileName);
-        $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
-
-        $options = new IntegrationTestsOptions();
-        $options->apiClientOptions = ApiClientOptions::load($data);
-
-        $cashRegisterCode = $data['cashRegisterCode'];
-
-        if (!is_string($cashRegisterCode) || strlen($cashRegisterCode) === 0) {
-            $cashRegisterCode = "88812345678900001";
-        }
-        
-        $options->cashRegisterCode = $cashRegisterCode;
-
-        return $options;
+function getGUID() {
+    if (function_exists('com_create_guid')){
+        return com_create_guid();
+    }
+    else {
+        mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        $charid = strtoupper(md5(uniqid(rand(), true)));
+        $hyphen = chr(45);// "-"
+        $uuid = chr(123)// "{"
+            .substr($charid, 0, 8).$hyphen
+            .substr($charid, 8, 4).$hyphen
+            .substr($charid,12, 4).$hyphen
+            .substr($charid,16, 4).$hyphen
+            .substr($charid,20,12)
+            .chr(125);// "}"
+        return $uuid;
     }
 }
 
 final class ApiClientIntegrationTest extends TestCase {
     
-    private function getProductionDemoAccountSettings() {
-        return IntegrationTestsOptions::load(dirname(__FILE__) . '/settings.json');
+    private function getDemoAccountSettings() {
+        ABC::test();
+        return ApiClientIntegrationTestOptions::load(dirname(__FILE__) . '/settings.json');
     }
 
     public function testGetCustomersWithFilter() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $customerFilter = (new CustomerFilterDto())
@@ -78,7 +77,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testGetCustomer() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
         $customerId = "3a0537ea-cfb2-2b4b-d521-02db003b276c";
 
@@ -88,7 +87,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testFindCustomer() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
         $customerId = "3a0537ea-cfb2-2b4b-d521-02db003b276c";
 
@@ -98,7 +97,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testGetNonExistingCustomer() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $customerId = "00000000-0000-0000-0000-000000000000";
@@ -115,7 +114,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testFindNonExistingCustomer() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
         $customerId = "00000000-0000-0000-0000-000000000000";
 
@@ -125,7 +124,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testRegisterReceiptUsingPosPrinter() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $posPrinterOptions = new PosReceiptPrinterOptions();
@@ -167,7 +166,50 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testRegisterReceiptUsingPosPrinterWithNonEmptyOptions() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
+        $apiClient = new ApiClient($settings->apiClientOptions);
+
+        $posPrinterOptions = new PosReceiptPrinterOptions();
+        $posPrinterOptions->openDrawer = true;
+        $receiptPrinter = new PosReceiptPrinterDto($posPrinterOptions);
+
+        $cashRegisterCode = $settings->cashRegisterCode;
+        $externalId = getGUID();
+
+        $item = new ReceiptRegistrationItemDto(
+            ReceiptItemType::POSITIVE,
+            "Coca Cola 0.25l",
+            1.29,
+            20.00,
+            new QuantityDto(2, "ks"),
+            2.58
+        );
+
+        $payment = new ReceiptRegistrationPaymentDto(2.58, "Hotovosť");
+
+        $receiptRegistrationRequest = new Receipts\CreateReceiptRegistrationRequestDto(
+            ReceiptType::CASH_REGISTER,
+            $cashRegisterCode,
+            $externalId,
+            [$item],
+            [$payment]
+        );
+
+        $receiptRegistrationRequest->headerText = "www.ninedigit.sk";
+        $receiptRegistrationRequest->footerText = "Ďakujeme za váš nákup.";
+
+        $validityTimeSpan = $settings->validityTimeSpan;
+
+        $createReceiptRegistration = new CreateReceiptRegistrationDto(
+            $receiptPrinter, $receiptRegistrationRequest, $validityTimeSpan);
+
+        $receiptRegistration = $apiClient->registerReceipt($createReceiptRegistration);
+
+        $this->assertEquals(RegistrationState::PROCESSED, $receiptRegistration->state);
+    }
+
+    public function testRegisterReceiptUsingPosPrinterWithNonEmptyOptionsAsExpired() {
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $posPrinterOptions = new PosReceiptPrinterOptions();
@@ -216,7 +258,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testRegisterReceiptUsingEmailPrinter() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $emailPrinterOptions = new EmailReceiptPrinterOptions("mail@example.com");
@@ -259,7 +301,7 @@ final class ApiClientIntegrationTest extends TestCase {
     }
 
     public function testRegisterReceiptUsingPdfPrinter() {
-        $settings = $this->getProductionDemoAccountSettings();
+        $settings = $this->getDemoAccountSettings();
         $apiClient = new ApiClient($settings->apiClientOptions);
 
         $pdfPrinterOptions = new PdfReceiptPrinterOptions();

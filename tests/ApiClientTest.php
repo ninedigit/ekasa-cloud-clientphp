@@ -1,11 +1,18 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
+use NineDigit\eKasa\Cloud\Client\ApiClient;
+use NineDigit\eKasa\Cloud\Client\ApiClientOptions;
+use NineDigit\eKasa\Cloud\Client\HttpMethod;
+use NineDigit\eKasa\Cloud\Client\ApiRequest;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerDto;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\CustomerFilterDto;
 use NineDigit\eKasa\Cloud\Client\Models\Customers\GetCustomerListResultDto;
+
+use NineDigit\eKasa\Cloud\Client\Tests\HttpClientMock;
+use NineDigit\eKasa\Cloud\Client\Tests\DateTimeHelper;
 
 
 final class ApiClientTest extends TestCase {

@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests;
 
 use PHPUnit\Framework\TestCase;
 use NineDigit\eKasa\Cloud\Client\ApiRequestBuilder;

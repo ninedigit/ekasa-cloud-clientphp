@@ -1,6 +1,10 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests;
+
+use NineDigit\eKasa\Cloud\Client\ApiRequest;
+use NineDigit\eKasa\Cloud\Client\HttpClientInterface;
+
 
 final class HttpClientMock implements HttpClientInterface {
     private $sendCallback;

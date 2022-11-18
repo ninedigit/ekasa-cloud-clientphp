@@ -1,6 +1,6 @@
 <?php
 
-namespace NineDigit\eKasa\Cloud\Client;
+namespace NineDigit\eKasa\Cloud\Client\Tests;
 
 use NineDigit\eKasa\Cloud\Client\Models\CreditDto;
 use NineDigit\eKasa\Cloud\Client\Models\CustomerDto;

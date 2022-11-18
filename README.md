@@ -18,6 +18,8 @@ php -r "unlink('composer-setup.php');"
 
 Inštalácia závislostí knižnice: `php composer.phar install`.
 
+> Po vytvorení nových tried (v separátnych súboroch) je nutné vyvolať `php composer.phar dump-autoload`.
+
 # Testovanie
 
 Pre vykonanie integračných testov je nutné vytvoriť súbor `settings.json` v `tests\integration` vo formáte **JSON** so štruktúrou zhodnou s triedou `ApiClientOptions` a teda:
@@ -35,6 +37,8 @@ Pre vykonanie integračných testov je nutné vytvoriť súbor `settings.json` v
 
 Testy je možné spustiť príkazom
 `./vendor/bin/phpunit --verbose tests`.
+
+Pre spustenie konkrétneho testu je nutné uviesť prepínač `--filter` s názvom testovaciej metódy a teda `./vendor/bin/phpunit --verbose tests --filter testRegisterReceiptUsingPosPrinterWithNonEmptyOptions`.
 
 ## Overenie kompatibility PHP
 
