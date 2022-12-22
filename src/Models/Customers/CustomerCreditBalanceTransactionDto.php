@@ -3,6 +3,7 @@
 namespace NineDigit\eKasa\Cloud\Client\Models\Customers;
 
 use NineDigit\eKasa\Cloud\Client\Models;
+use NineDigit\eKasa\Cloud\Client\Models\UserRawMetaDto;
 use NineDigit\eKasa\Cloud\Client\Models\CreditDto;
 use NineDigit\eKasa\Cloud\Client\Models\CreationAuditedEntityDto;
 
@@ -40,6 +41,11 @@ final class CustomerCreditBalanceTransactionDto extends CreationAuditedEntityDto
      * Meta dáta
      */
     public ?array $meta;
+    /**
+     * Kolekcia meta dát viazaných na kokrétnych používateľov
+     * @var UserRawMetaDto[]
+     */
+    public array $userMeta;
     /**
      * Unikátny identifikátor zákazníka, ku ktorému táto transakcia patrí
      */

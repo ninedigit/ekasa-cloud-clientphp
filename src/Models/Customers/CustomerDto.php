@@ -2,10 +2,9 @@
 
 namespace NineDigit\eKasa\Cloud\Client\Models\Customers;
 
-use NineDigit\eKasa\Cloud\Client\Models;
+use NineDigit\eKasa\Cloud\Client\Models\UserRawMetaDto;
 use NineDigit\eKasa\Cloud\Client\Models\CreditDto;
 use NineDigit\eKasa\Cloud\Client\Models\AuditedEntityDto;
-
 
 /**
  * Zákazník
@@ -111,4 +110,9 @@ final class CustomerDto extends AuditedEntityDto {
      * Meta dáta
      */
     public array $meta;
+    /**
+     * Kolekcia meta dát viazaných na kokrétnych používateľov
+     * @var UserRawMetaDto[]
+     */
+    public array $userMeta;
 }

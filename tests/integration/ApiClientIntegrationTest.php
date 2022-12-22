@@ -51,7 +51,6 @@ function getGUID() {
 final class ApiClientIntegrationTest extends TestCase {
     
     private function getDemoAccountSettings() {
-        ABC::test();
         return ApiClientIntegrationTestOptions::load(dirname(__FILE__) . '/settings.json');
     }
 

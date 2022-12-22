@@ -284,6 +284,12 @@ final class SymfonyJsonSerializerTest extends TestCase {
               "meta": {
                   "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-8003-dfc6-f2bd-e100a5a55c7c"
               },
+              "userMeta": [{
+                "userId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+                "meta": {
+                  "sn": "ct-0001"
+                }
+              }],
               "note": "Transakcia #498503871",
               "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
           }
@@ -309,6 +315,7 @@ final class SymfonyJsonSerializerTest extends TestCase {
               "meta": {
                   "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-7ffd-9089-f57b-fa48f6c08d65"
               },
+              "userMeta": [],
               "note": "Karta #1",
               "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
           },
@@ -332,6 +339,12 @@ final class SymfonyJsonSerializerTest extends TestCase {
               "meta": {
                   "Portos.Features:NineDigit.EKasaCloud:Remote:Id": "s:3a05321e-8069-042c-ca14-4704f4b97d28"
               },
+              "userMeta": [{
+                "userId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+                "meta": {
+                  "sn": "cc-0002"
+                }
+              }],
               "note": "Karta #2",
               "customerId": "3a0537ea-ce28-5636-85ea-a33b27f9958c"
           }
@@ -340,7 +353,13 @@ final class SymfonyJsonSerializerTest extends TestCase {
       "discountRate": 22.50,
       "meta": {
           "Portos.Features:NineDigit.EKasaCloud:Local:Version": "i:6"
-      }
+      },
+      "userMeta": [{
+        "userId": "3a053799-6dc4-20c5-9544-e4f8391f3f3a",
+        "meta": {
+          "sn": "c-0001"
+        }
+      }]
     }';
 
     $customer = $serializer->deserialize($json, $type);
@@ -394,6 +413,16 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $transaction->meta);
     $this->assertEquals("s:3a05321e-8003-dfc6-f2bd-e100a5a55c7c", $transaction->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
 
+    $this->assertIsArray($transaction->userMeta);
+    $this->assertCount(1, $transaction->meta);
+    
+    $transactionUserMeta1 = $transaction->userMeta[0];
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $transactionUserMeta1->userId);
+    $this->assertIsArray($transactionUserMeta1->meta);
+    $this->assertCount(1, $transactionUserMeta1->meta);
+    $this->assertArrayHasKey("sn", $transactionUserMeta1->meta);
+    $this->assertEquals("ct-0001", $transactionUserMeta1->meta["sn"]);
+
     $this->assertEquals("Transakcia #498503871", $transaction->note);
     $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $transaction->customerId);
 
@@ -422,9 +451,12 @@ final class SymfonyJsonSerializerTest extends TestCase {
     
     $this->assertIsArray($card1->meta);
     $this->assertCount(1, $card1->meta);
-    
+
     $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $card1->meta);
     $this->assertEquals("s:3a05321e-7ffd-9089-f57b-fa48f6c08d65", $card1->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
+    
+    $this->assertIsArray($card1->userMeta);
+    $this->assertCount(0, $card1->userMeta);
     
     $this->assertEquals("Karta #1", $card1->note);
     $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $card1->customerId);
@@ -455,6 +487,13 @@ final class SymfonyJsonSerializerTest extends TestCase {
     $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Remote:Id", $card2->meta);
     $this->assertEquals("s:3a05321e-8069-042c-ca14-4704f4b97d28", $card2->meta["Portos.Features:NineDigit.EKasaCloud:Remote:Id"]);
     
+    $cardUserMeta2 = $card2->userMeta[0];
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $cardUserMeta2->userId);
+    $this->assertIsArray($cardUserMeta2->meta);
+    $this->assertCount(1, $cardUserMeta2->meta);
+    $this->assertArrayHasKey("sn", $cardUserMeta2->meta);
+    $this->assertEquals("cc-0002", $cardUserMeta2->meta["sn"]);
+
     $this->assertEquals("Karta #2", $card2->note);
     $this->assertEquals("3a0537ea-ce28-5636-85ea-a33b27f9958c", $card2->customerId);
 
@@ -466,6 +505,13 @@ final class SymfonyJsonSerializerTest extends TestCase {
     
     $this->assertArrayHasKey("Portos.Features:NineDigit.EKasaCloud:Local:Version", $customer->meta);
     $this->assertEquals("i:6", $customer->meta["Portos.Features:NineDigit.EKasaCloud:Local:Version"]);
+
+    $customerUserMeta = $customer->userMeta[0];
+    $this->assertEquals("3a053799-6dc4-20c5-9544-e4f8391f3f3a", $customerUserMeta->userId);
+    $this->assertIsArray($customerUserMeta->meta);
+    $this->assertCount(1, $customerUserMeta->meta);
+    $this->assertArrayHasKey("sn", $customerUserMeta->meta);
+    $this->assertEquals("c-0001", $customerUserMeta->meta["sn"]);
   }
 
   public function testValidationProblemDetailsDeserialization() {
